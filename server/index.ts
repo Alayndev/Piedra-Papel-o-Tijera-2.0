@@ -19,7 +19,26 @@ const dist = path.resolve(__dirname, "../dist/", "index.html");
 // ENDPOINTS
 
 // SIGNUP:
-app.post("/signup", (req, res) => {});
+app.post("/signup", (req, res) => {
+  let userName = req.body.userName;
+
+  usersCollRef
+    .where("userName", "==", userName)
+    .get()
+    .then((querySnapshot) => {
+      if (querySnapshot.empty) {
+        usersCollRef.add({ userName }).then((doc) => {
+          res.json({ userId: doc.id, newUser: true });
+        });
+      } else {
+        res.status(400).json({
+          userId: querySnapshot.docs[0].id,
+          newUser: false,
+          message: "user already exists",
+        });
+      }
+    });
+});
 
 //
 app.post("/gamerooms", (req, res) => {});

@@ -13,7 +13,26 @@ var gameroomsCollRef = database_1.firestore.collection("gamerooms");
 var dist = path.resolve(__dirname, "../dist/", "index.html");
 // ENDPOINTS
 // SIGNUP:
-app.post("/signup", function (req, res) { });
+app.post("/signup", function (req, res) {
+    var userName = req.body.userName;
+    usersCollRef
+        .where("userName", "==", userName)
+        .get()
+        .then(function (querySnapshot) {
+        if (querySnapshot.empty) {
+            usersCollRef.add({ userName: userName }).then(function (doc) {
+                res.json({ userId: doc.id, newUser: true });
+            });
+        }
+        else {
+            res.status(400).json({
+                userId: querySnapshot.docs[0].id,
+                newUser: false,
+                message: "user already exists"
+            });
+        }
+    });
+});
 //
 app.post("/gamerooms", function (req, res) { });
 //
