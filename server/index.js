@@ -11,6 +11,7 @@ var port = process.env.PORT || 3000;
 var usersCollRef = database_1.firestore.collection("users");
 var gameroomsCollRef = database_1.firestore.collection("gamerooms");
 var dist = path.resolve(__dirname, "../dist/", "index.html");
+console.log(dist);
 // ENDPOINTS
 // SIGNUP:
 app.post("/signup", function (req, res) {
@@ -40,7 +41,9 @@ app.post("/gameroomsscore/:roomId", function (req, res) { });
 //
 app.post("/gamedatascore/:roomId", function (req, res) { });
 //
-app.get("/gameroomsscores/:roomId", function (req, res) { });
+app.get("/gameroomsscores/:roomId", function (req, res) {
+    res.send("Holaaaaaaaaaaaaaaaaaaaaaaaa");
+});
 //
 app.get("/gamerooms/:roomId", function (req, res) { });
 // AUTH:

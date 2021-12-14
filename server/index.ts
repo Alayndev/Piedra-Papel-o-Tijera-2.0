@@ -15,6 +15,7 @@ const usersCollRef = firestore.collection("users");
 const gameroomsCollRef = firestore.collection("gamerooms");
 
 const dist = path.resolve(__dirname, "../dist/", "index.html");
+console.log(dist);
 
 // ENDPOINTS
 
@@ -50,7 +51,9 @@ app.post("/gameroomsscore/:roomId", (req, res) => {});
 app.post("/gamedatascore/:roomId", (req, res) => {});
 
 //
-app.get("/gameroomsscores/:roomId", (req, res) => {});
+app.get("/gameroomsscores/:roomId", (req, res) => {
+  res.send("Holaaaaaaaaaaaaaaaaaaaaaaaa");
+});
 
 //
 app.get("/gamerooms/:roomId", (req, res) => {});
