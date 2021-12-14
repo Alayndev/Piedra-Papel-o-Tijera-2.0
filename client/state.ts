@@ -1,6 +1,6 @@
 import { rtdb } from "./rtbd";
 
-const API_URL = "http://localhost:3000";
+const API_URL = "https://r-p-s-v2.herokuapp.com" || "http://localhost:3000";
 
 import map from "lodash/map";
 
@@ -29,10 +29,9 @@ const state = {
       this.setState(lastStorageState);
 
       console.log("hay algo en sessionStorage");
-      
     } else {
       const initialState = this.getState();
-      
+
       console.log("NO hay nada");
       this.setState(initialState);
     }
