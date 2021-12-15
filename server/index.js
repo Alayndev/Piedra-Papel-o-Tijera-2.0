@@ -11,7 +11,6 @@ var port = process.env.PORT || 3000;
 var usersCollRef = database_1.firestore.collection("users");
 var gameroomsCollRef = database_1.firestore.collection("gamerooms");
 var dist = path.resolve(__dirname, "../dist/", "index.html");
-console.log(dist);
 // ENDPOINTS
 // SIGNUP:
 app.post("/signup", function (req, res) {
@@ -62,7 +61,7 @@ app.post("/gamestart/:id", function (req, res) { });
 app.post("/handchoice/:id", function (req, res) { });
 app.use(express.static("dist"));
 app.get("*", function (req, res) {
-    res.sendFile(dist);
+    res.sendFile(__dirname + "../dist/index.html");
 });
 app.listen(port, function () {
     console.log("Example app listening at http://localhost:".concat(port));

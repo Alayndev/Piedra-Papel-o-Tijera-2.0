@@ -1,7 +1,7 @@
 import * as express from "express";
 import * as cors from "cors";
-import { nanoid } from "nanoid";
 import * as path from "path";
+import { nanoid } from "nanoid";
 
 import { firestore, realtimeDB } from "./database";
 
@@ -15,7 +15,6 @@ const usersCollRef = firestore.collection("users");
 const gameroomsCollRef = firestore.collection("gamerooms");
 
 const dist = path.resolve(__dirname, "../dist/", "index.html");
-console.log(dist);
 
 // ENDPOINTS
 
@@ -82,7 +81,7 @@ app.post("/handchoice/:id", (req, res) => {});
 app.use(express.static("dist"));
 
 app.get("*", (req, res) => {
-  res.sendFile(dist);
+  res.sendFile(__dirname + "../dist/index.html");
 });
 
 app.listen(port, () => {
