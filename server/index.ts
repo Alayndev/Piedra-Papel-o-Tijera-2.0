@@ -46,7 +46,7 @@ app.get("/getter", (req, res) => {
 app.use(express.static("dist"));
 
 app.get("*", (req, res) => {
-  res.sendFile(dist);
+  res.sendFile(`${dist}`);
 });
 
 app.listen(port, () => {
