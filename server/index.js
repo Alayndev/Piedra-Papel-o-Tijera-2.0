@@ -62,7 +62,7 @@ app.post("/gamestart/:id", function (req, res) { });
 app.post("/handchoice/:id", function (req, res) { });
 app.use(express.static("dist"));
 app.get("*", function (req, res) {
-    res.sendFile("".concat(dist));
+    res.sendFile(dist);
 });
 app.listen(port, function () {
     console.log("Example app listening at http://localhost:".concat(port));
