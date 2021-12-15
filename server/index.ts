@@ -1,9 +1,8 @@
 import * as express from "express";
 import * as cors from "cors";
 import * as path from "path";
-import { nanoid } from "nanoid";
 
-import { firestore, realtimeDB } from "./database";
+import { firestore } from "./database";
 
 const app = express();
 app.use(express.json());
@@ -12,7 +11,6 @@ app.use(cors());
 const port = process.env.PORT || 3000;
 
 const usersCollRef = firestore.collection("users");
-const gameroomsCollRef = firestore.collection("gamerooms");
 
 const dist = path.resolve(__dirname, "../dist/", "index.html");
 
