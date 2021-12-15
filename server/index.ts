@@ -1,8 +1,9 @@
 import * as express from "express";
 import * as cors from "cors";
 import * as path from "path";
+import { nanoid } from "nanoid";
 
-import { firestore } from "./database";
+import { firestore, realtimeDB } from "./database";
 
 const app = express();
 app.use(express.json());

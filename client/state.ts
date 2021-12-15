@@ -1,6 +1,6 @@
 import { rtdb } from "./rtbd";
 
-const API_URL = "https://r-p-s-v2.herokuapp.com" || "http://localhost:3000";
+const API_URL = process.env.PORT || "http://localhost:3000";
 
 import map from "lodash/map";
 
