@@ -45,6 +45,12 @@ app.get("/getter", (req, res) => {
   res.send("Holaaaaaaaaaaaaaaaaaaaaaaaa");
 });
 
+app.use(express.static("dist"));
+
+app.get("*", (req, res) => {
+  res.sendFile(dist);
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

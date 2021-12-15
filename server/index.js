@@ -34,34 +34,12 @@ app.post("/signup", function (req, res) {
     });
 });
 //
-app.post("/gamerooms", function (req, res) { });
-//
-app.post("/gameroomsscore/:roomId", function (req, res) { });
-//
-app.post("/gamedatascore/:roomId", function (req, res) { });
-//
-app.get("/gameroomsscores/:roomId", function (req, res) {
+app.get("/getter", function (req, res) {
     res.send("Holaaaaaaaaaaaaaaaaaaaaaaaa");
 });
-//
-app.get("/gamerooms/:roomId", function (req, res) { });
-// AUTH:
-app.post("/auth", function (req, res) { });
-//
-app.post("/gamedata/:id", function (req, res) { });
-//
-app.post("/gamestart/:id", function (req, res) { });
-//
-app.post("/disconnectplayer/:id", function (req, res) { });
-//
-app.post("/restartplayer/:id", function (req, res) { });
-//
-app.post("/gamestart/:id", function (req, res) { });
-//
-app.post("/handchoice/:id", function (req, res) { });
 app.use(express.static("dist"));
 app.get("*", function (req, res) {
-    res.sendFile(__dirname + "../dist/index.html");
+    res.sendFile(dist);
 });
 app.listen(port, function () {
     console.log("Example app listening at http://localhost:".concat(port));
