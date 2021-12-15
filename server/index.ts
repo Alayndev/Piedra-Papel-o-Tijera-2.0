@@ -41,42 +41,9 @@ app.post("/signup", (req, res) => {
 });
 
 //
-app.post("/gamerooms", (req, res) => {});
-
-//
-app.post("/gameroomsscore/:roomId", (req, res) => {});
-
-//
-app.post("/gamedatascore/:roomId", (req, res) => {});
-
-//
-app.get("/gameroomsscores/:roomId", (req, res) => {
+app.get("/getter", (req, res) => {
   res.send("Holaaaaaaaaaaaaaaaaaaaaaaaa");
 });
-
-//
-app.get("/gamerooms/:roomId", (req, res) => {});
-
-// AUTH:
-app.post("/auth", (req, res) => {});
-
-//
-app.post("/gamedata/:id", (req, res) => {});
-
-//
-app.post("/gamestart/:id", (req, res) => {});
-
-//
-app.post("/disconnectplayer/:id", (req, res) => {});
-
-//
-app.post("/restartplayer/:id", (req, res) => {});
-
-//
-app.post("/gamestart/:id", (req, res) => {});
-
-//
-app.post("/handchoice/:id", (req, res) => {});
 
 app.use(express.static("dist"));
 
