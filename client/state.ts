@@ -1,7 +1,7 @@
 import { rtdb } from "./rtbd";
 
 const API_URL =
-  "https://dwf-m6-r-p-s-v2.herokuapp.com" || "http://localhost:3000";
+  "https://dwf-m6-r-p-s-v2.herokuapp.com" || "http://localhost:3000"; // Esto hay que arreglarlo con un ternario o env var como Alexis
 
 import map from "lodash/map";
 
@@ -20,7 +20,6 @@ const state = {
 
   /////////// BASIC STATE METHODS ///////////
 
-  // Hay algo que esta mal xq guarda el nombre en sessionStorage al hacer refresh, preguntar
   initState() {
     const lastStorageState = JSON.parse(sessionStorage.getItem("actualgame"));
 
@@ -52,6 +51,9 @@ const state = {
     sessionStorage.setItem("actualgame", JSON.stringify(newState));
 
     console.log("Soy el STATE, he cambiado. Aquí la nueva data:", this.data);
+
+    console.log(process.env.PORT);
+
   },
 
   subscribe(cb: (any) => any) {
