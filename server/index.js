@@ -38,8 +38,8 @@ app.post("/signup", function (req, res) {
 // ADAPTAR CON /rooms DEL CAP. 5 TEORIA -- OK
 // Repasar métodos Firestore y Rtdb con docs -- OK
 // Revisar y probar en Postman -- OK
-// Crear método para consumir este endpoint en state -- OK
-// Consumirlo desde la page -- OK
+// Crear método para consumir este endpoint en state --
+// Consumirlo desde la page --
 // Deploy
 app.post("/gamerooms", function (req, res) {
     var userId = req.body.userId;
@@ -134,6 +134,16 @@ app.get("/gamerooms/:roomId", function (req, res) {
                 message: "Unauthorized, this user does not exist."
             });
         }
+    });
+});
+// DEVUELVE EL SCORE DE LA BASE DE DATOS DE FIRESTORE
+// EJEMPLO: http://localhost:3000/gameroomsscores/JM1112
+app.get("/gameroomsscores/:roomid", function (req, res) {
+    var gameRoomIdFirstore = req.params.roomid; // Me pasan la roomId Firestore, el Doc de la Coll Gamerooms
+    var gameroomsDocRef = gameroomsCollRef.doc(gameRoomIdFirstore.toString());
+    gameroomsDocRef.get().then(function (snap) {
+        var actualData = snap.data();
+        res.json(actualData.score);
     });
 });
 app.use(express.static("dist"));

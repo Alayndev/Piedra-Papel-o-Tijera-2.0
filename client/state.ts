@@ -22,16 +22,11 @@ const state = {
   initState() {
     const lastStorageState = JSON.parse(sessionStorage.getItem("actualgame"));
 
-    console.log("sessionStorage", lastStorageState);
-
     if (lastStorageState) {
       this.setState(lastStorageState);
-
-      console.log("hay algo en sessionStorage");
     } else {
       const initialState = this.getState();
 
-      console.log("NO hay nada");
       this.setState(initialState);
     }
   },
@@ -57,8 +52,6 @@ const state = {
   },
 
   setUserName(userName: string) {
-    console.log(userName);
-
     const currentState = this.getState();
     currentState.userName = userName;
 
@@ -70,8 +63,6 @@ const state = {
   // FUNCIONA
   signUp(userData) {
     const cs = this.getState();
-
-    console.log(userData, "signup");
 
     if (cs.userName) {
       return fetch(API_URL + "/signup", {
@@ -94,8 +85,6 @@ const state = {
   // FUNCIONA
   createNewGameRoom(gameroomData) {
     const cs = this.getState();
-
-    console.log(gameroomData, "create gameroom");
 
     if (cs.userId) {
       return fetch(API_URL + "/gamerooms", {
@@ -144,27 +133,65 @@ const state = {
     }
   },
 
-  // DESPUES.
-  // IMPORTA LA DATA DEL GAMEROOM Y ESCUCHA LOS CAMBIOS
-  // connectToGamerooms(roomId) {
-  //   const chatroomRef = realtimeDB.ref("/gamerooms/" + roomId + "/currentgame");
-  //   chatroomRef.on("value", (snapshot) => {
-  //     const gameRoomData = snapshot.val();
 
-  //     // CARGA LA DATA AL STATE
-  //     const currentState = this.getState();
-  //     currentState.currentGame = gameRoomData;
+  // ACÁ DEJO: 
+  // Endpoint GET /gameroomsscores/:roomid funciona en Postman
+  // Falta consumirlo desde state y page ( ver pasos en API )
+  // Hacer conexión con la Rtdb en state ( ver linea 159 ) y dentro de esta conexión hacer la llamada HTTP a dicha API con importGameRoomScore()
+  // Guardar en currentGame (RTDB) y en roomScore (Firestore Coll Gamerooms score) lo indicado en linea 146 
 
-  //     const fireBaseScorePromise = state.importGameRoomScore(
-  //       currentState.roomId
-  //     );
+  // PROBAR:
+  // 1) Si se conecta a la rtdb. Probar si efectivamente nos conectamos a la Rtdb y escuchamos los cambios (hacerlo manual quizá)
+  // 2) Por qué no hace la llamada HTTP con importGameRoomScore() a la API/Back?
+  // Tiene que estar en currentGame lo de la RTDB -- en roomScore el score de Doc JR1112 de la Coll Gamerooms Firestore
 
-  //     fireBaseScorePromise.then((scoreData) => {
-  //       currentState.roomScore = scoreData;
-  //       this.setState(currentState);
-  //     });
-  //   });
-  // },
+  // IMPORTA LA DATA DEL GAMEROOM RTDB Y ESCUCHA LOS CAMBIOS
+  connectToGamerooms() {
+    const cs = this.getState();
+
+    console.log("llegas hasta acá?"); // Si, llega
+
+    // Ref a la Gameroom en la RTDB ( rtdbRoomId == nanoid )
+    const chatroomRef = rtdb.ref(
+      "/gamerooms/" + cs.rtdbRoomId + "/currentgame"
+    );
+
+    // ACÁ ALGO FALLA !!!! 1) Ver cap. 5 Rooms - 2) Ver Discord Rooms que pasaba esto y pasaron un link
+    // Escuchamos los cambios y se los cargamos la State
+    chatroomRef.on("value", (snapshot) => {
+      console.log("Hola, conectas a la rtdb?");
+
+      const gameRoomData = snapshot.val();
+
+      // CARGA LA DATA EN EL STATE (chequear si con linea 174 es suficiente y se guarda algo en currentGame)
+      cs.currentGame = gameRoomData;
+      this.setState(cs);
+
+      const fireBaseScorePromise = state.importGameRoomScore();
+
+      fireBaseScorePromise.then((scoreData) => {
+        cs.roomScore = scoreData;
+        this.setState(cs);
+      });
+    });
+  },
+
+  // DEVUELVE EL SCORE DE LA BASE DE DATOS DE FIRESTORE
+  // EJEMPLO: http://localhost:3000/gameroomsscores/JM1112
+  importGameRoomScore() {
+    const cs = this.getState();
+
+    return fetch(API_URL + "/gameroomsscores/" + cs.roomId, {
+      method: "get",
+      headers: { "content-type": "application/json" },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((json) => {
+        return json;
+      });
+  },
 
   // askNewRoom() {
   //   const cs = this.getState();

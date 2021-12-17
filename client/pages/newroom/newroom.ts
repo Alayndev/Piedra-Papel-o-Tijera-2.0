@@ -101,17 +101,17 @@ class NewRoomPage extends HTMLElement {
           newRoomPromise.then((res) => {
             if (res.roomId) {
               const getRoomPromise = state.getGameRoomLongId();
-              // .then((res) => {
-              //     state.setLongRoomId(res.rtdbRoomId);
-              //     state.connectToGamerooms(res.rtdbRoomId);
 
-              //     const conectionListener = setInterval(() => {
-              //       if (state.currentGameFlag() && state.currentScoreFlag()) {
-              //         clearInterval(conectionListener);
-              //         state.redirectPlayers();
-              //       }
-              //     }, 500);
-              //   });
+              getRoomPromise.then((res) => {
+                state.connectToGamerooms();
+
+                // const conectionListener = setInterval(() => {
+                //   if (state.currentGameFlag() && state.currentScoreFlag()) {
+                //     clearInterval(conectionListener);
+                //     state.redirectPlayers();
+                //   }
+                // }, 500);
+              });
             }
           });
         }

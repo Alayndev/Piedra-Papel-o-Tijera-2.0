@@ -41,12 +41,6 @@ app.post("/signup", (req, res) => {
 });
 
 // CREATE GAMEROOMS
-// ADAPTAR CON /rooms DEL CAP. 5 TEORIA -- OK
-// Repasar métodos Firestore y Rtdb con docs -- OK
-// Revisar y probar en Postman -- OK
-// Crear método para consumir este endpoint en state -- OK
-// Consumirlo desde la page -- OK
-// Deploy
 app.post("/gamerooms", (req, res) => {
   const { userId } = req.body;
   const { userName } = req.body;
@@ -150,6 +144,26 @@ app.get("/gamerooms/:roomId", (req, res) => {
         message: "Unauthorized, this user does not exist.",
       });
     }
+  });
+});
+
+// DEVUELVE EL SCORE DE LA BASE DE DATOS DE FIRESTORE
+// ADAPTAR CON /rooms DEL CAP. 5 TEORIA -- OK
+// Repasar métodos Firestore y Rtdb con docs -- OK
+// Revisar y probar en Postman -- OK
+// Crear método para consumir este endpoint en state --
+// Consumirlo desde la page --
+// Deploy
+
+// EJEMPLO: http://localhost:3000/gameroomsscores/JM1112
+app.get("/gameroomsscores/:roomid", (req, res) => {
+  const gameRoomIdFirstore = req.params.roomid; // Me pasan la roomId Firestore, el Doc de la Coll Gamerooms
+
+  const gameroomsDocRef = gameroomsCollRef.doc(gameRoomIdFirstore.toString());
+
+  gameroomsDocRef.get().then((snap) => {
+    const actualData = snap.data();
+    res.json(actualData.score);
   });
 });
 
