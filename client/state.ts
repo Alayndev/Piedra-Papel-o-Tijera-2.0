@@ -1,6 +1,6 @@
 import { rtdb } from "./rtbd";
 
-const API_URL = "http://localhost:3000"; // Esto hay que arreglarlo con un ternario o env var 
+const API_URL = "http://localhost:3000"; // Esto hay que arreglarlo con un ternario o env var
 
 import map from "lodash/map";
 
@@ -67,6 +67,7 @@ const state = {
 
   /////////// BACK METHODS ///////////
 
+  // FUNCIONA
   signUp(userData) {
     const cs = this.getState();
 
@@ -90,7 +91,7 @@ const state = {
     }
   },
 
-  //
+  // FUNCIONA
   createNewGameRoom(gameroomData) {
     const cs = this.getState();
 
@@ -115,6 +116,55 @@ const state = {
         });
     }
   },
+
+  // FUNCIONA
+  // DEVUELVE EL ID LARGO DE LA SALA CUANDO LE PASAS EL ID CORTO Y EL NOMBRE DE USUARIO. SETEA rtdbRoomId
+  //     EJEMPLO:  /gamerooms/JM1300?userId=Y5m8jxRGZTj3DoI10oqq
+  getGameRoomLongId() {
+    const cs = this.getState();
+
+    if (cs.roomId) {
+      return fetch(
+        API_URL + "/gamerooms/" + cs.roomId + "?userId=" + cs.userId,
+        {
+          method: "get",
+        }
+      )
+        .then((res) => {
+          return res.json();
+        })
+        .then((json) => {
+          console.log(json);
+
+          cs.rtdbRoomId = json.rtdbRoomId;
+          this.setState(cs);
+
+          return json;
+        });
+    }
+  },
+
+  // DESPUES.
+  // IMPORTA LA DATA DEL GAMEROOM Y ESCUCHA LOS CAMBIOS
+  // connectToGamerooms(roomId) {
+  //   const chatroomRef = realtimeDB.ref("/gamerooms/" + roomId + "/currentgame");
+  //   chatroomRef.on("value", (snapshot) => {
+  //     const gameRoomData = snapshot.val();
+
+  //     // CARGA LA DATA AL STATE
+  //     const currentState = this.getState();
+  //     currentState.currentGame = gameRoomData;
+
+  //     const fireBaseScorePromise = state.importGameRoomScore(
+  //       currentState.roomId
+  //     );
+
+  //     fireBaseScorePromise.then((scoreData) => {
+  //       currentState.roomScore = scoreData;
+  //       this.setState(currentState);
+  //     });
+  //   });
+  // },
 
   // askNewRoom() {
   //   const cs = this.getState();

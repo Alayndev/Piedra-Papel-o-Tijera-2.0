@@ -44,8 +44,8 @@ app.post("/signup", (req, res) => {
 // ADAPTAR CON /rooms DEL CAP. 5 TEORIA -- OK
 // Repasar métodos Firestore y Rtdb con docs -- OK
 // Revisar y probar en Postman -- OK
-// Crear método para consumir este endpoint en state
-// Consumirlo desde la page
+// Crear método para consumir este endpoint en state -- OK
+// Consumirlo desde la page -- OK
 // Deploy
 app.post("/gamerooms", (req, res) => {
   const { userId } = req.body;
@@ -114,6 +114,40 @@ app.post("/gamerooms", (req, res) => {
     } else {
       res.status(401).json({
         message: "Unauthorized, this user does not exist",
+      });
+    }
+  });
+});
+
+// GETTER DEL GAMEROOM RTDB
+//   EJEMPLO: /gamerooms/JM1300?userId=Y5m8jxRGZTj3DoI10oqq
+app.get("/gamerooms/:roomId", (req, res) => {
+  const { userId } = req.query;
+  const { roomId } = req.params;
+
+  console.log(userId); // Doc de la Coll Users
+  console.log(roomId); // Doc de la Coll Gamerooms
+
+  const userDocRef = usersCollRef.doc(userId.toString());
+
+  // Si el Doc/userId existe en la Coll Users, busco en la Coll Gamerooms el Doc/roomId (corto) para devolver el ID largo RTDB que este Doc guarda
+  userDocRef.get().then((doc) => {
+    if (doc.exists) {
+      const gameroomsDocRef = gameroomsCollRef.doc(roomId.toString());
+
+      gameroomsDocRef.get().then((snap) => {
+        if (snap.exists) {
+          const data = snap.data();
+          res.json(data);
+        } else {
+          res.status(401).json({
+            message: "Gameroom does not exist.",
+          });
+        }
+      });
+    } else {
+      res.status(401).json({
+        message: "Unauthorized, this user does not exist.",
       });
     }
   });
