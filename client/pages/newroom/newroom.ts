@@ -80,9 +80,44 @@ class NewRoomPage extends HTMLElement {
         userName: userName,
       };
 
-      state.signUp(newUserData);
+      const newUserPromise: any = state.signUp(newUserData);
 
-      
+      console.log(newUserPromise);
+
+      newUserPromise.then((res) => {
+        if (res.message) {
+          alert(res.message);
+        }
+
+        if (res.userId) {
+          const newGameRoomData = {
+            userId: res.userId,
+            userName: userName,
+          };
+
+          const newUserId = res.userId;
+          const newRoomPromise = state.createNewGameRoom(newGameRoomData);
+
+          // newRoomPromise.then((res) => {
+          //   if (res.roomId) {
+
+          //     const getRoomPromise = state
+          //       .getGameRoomLongId(newRoomId, newUserId)
+          //       .then((res) => {
+          //         state.setLongRoomId(res.rtdbRoomId);
+          //         state.connectToGamerooms(res.rtdbRoomId);
+
+          //         const conectionListener = setInterval(() => {
+          //           if (state.currentGameFlag() && state.currentScoreFlag()) {
+          //             clearInterval(conectionListener);
+          //             state.redirectPlayers();
+          //           }
+          //         }, 500);
+          //       });
+          //   }
+          // });
+        }
+      });
     });
   }
 

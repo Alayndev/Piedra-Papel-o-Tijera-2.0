@@ -1,7 +1,6 @@
 import { rtdb } from "./rtbd";
 
-const API_URL =
-  "https://dwf-m6-r-p-s-v2.herokuapp.com" || "http://localhost:3000"; // Esto hay que arreglarlo con un ternario o env var como Alexis
+const API_URL = "http://localhost:3000"; // Esto hay que arreglarlo con un ternario o env var 
 
 import map from "lodash/map";
 
@@ -74,7 +73,7 @@ const state = {
     console.log(userData, "signup");
 
     if (cs.userName) {
-      fetch(API_URL + "/signup", {
+      return fetch(API_URL + "/signup", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(userData),
@@ -88,8 +87,32 @@ const state = {
 
           return json;
         });
-    } else {
-      console.error("No hay un user en el state");
+    }
+  },
+
+  //
+  createNewGameRoom(gameroomData) {
+    const cs = this.getState();
+
+    console.log(gameroomData, "create gameroom");
+
+    if (cs.userId) {
+      return fetch(API_URL + "/gamerooms", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(gameroomData),
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((json) => {
+          console.log(json);
+
+          cs.roomId = json.roomId;
+          this.setState(cs);
+
+          return json;
+        });
     }
   },
 
