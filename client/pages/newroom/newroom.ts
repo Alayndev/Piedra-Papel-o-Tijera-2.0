@@ -80,16 +80,9 @@ class NewRoomPage extends HTMLElement {
         userName: userName,
       };
 
-      const newUserPromise: any = state.signUp(newUserData);
+      state.signUp(newUserData);
 
-      console.log(newUserPromise);
       
-
-      newUserPromise.then((res) => {
-        if (res.message) {
-          alert(res.message);
-        }
-      });
     });
   }
 
