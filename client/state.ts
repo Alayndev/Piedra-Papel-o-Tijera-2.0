@@ -51,9 +51,6 @@ const state = {
     sessionStorage.setItem("actualgame", JSON.stringify(newState));
 
     console.log("Soy el STATE, he cambiado. Aquí la nueva data:", this.data);
-
-    console.log(process.env.PORT);
-
   },
 
   subscribe(cb: (any) => any) {
@@ -88,6 +85,8 @@ const state = {
 
           cs.userId = json.userId;
           this.setState(cs);
+
+          return json;
         });
     } else {
       console.error("No hay un user en el state");

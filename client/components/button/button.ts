@@ -1,22 +1,21 @@
-export function initButtonComp() {
-  class ButtonComp extends HTMLElement {
-    shadow: ShadowRoot;
+class ButtonComp extends HTMLElement {
+  shadow: ShadowRoot;
 
-    constructor() {
-      super();
-      this.shadow = this.attachShadow({ mode: "open" });
-    }
+  constructor() {
+    super();
+    this.shadow = this.attachShadow({ mode: "open" });
+  }
 
-    connectedCallback() {
-      this.render();
-    }
+  connectedCallback() {
+    this.render();
+  }
 
-    render() {
-      const buttonEl = document.createElement("button");
-      buttonEl.classList.add("button");
+  render() {
+    const buttonEl = document.createElement("button");
+    buttonEl.classList.add("button");
 
-      const buttonStyles = document.createElement("style");
-      buttonStyles.textContent = `
+    const buttonStyles = document.createElement("style");
+    buttonStyles.textContent = `
         .button {
             width: 100%;
             height: 87px;
@@ -32,11 +31,11 @@ export function initButtonComp() {
         }
       `;
 
-      buttonEl.textContent = this.textContent;
+    buttonEl.textContent = this.textContent;
 
-      this.shadow.appendChild(buttonStyles);
-      this.shadow.appendChild(buttonEl);
-    }
+    this.shadow.appendChild(buttonStyles);
+    this.shadow.appendChild(buttonEl);
   }
-  customElements.define("button-comp", ButtonComp);
 }
+
+customElements.define("button-comp", ButtonComp);

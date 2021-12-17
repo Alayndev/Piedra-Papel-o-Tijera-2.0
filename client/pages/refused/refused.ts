@@ -1,4 +1,4 @@
-class WaitingPage extends HTMLElement {
+class RefusedPage extends HTMLElement {
   shadow: ShadowRoot;
 
   constructor() {
@@ -21,4 +21,4 @@ class WaitingPage extends HTMLElement {
   }
 }
 
-customElements.define("x-waiting-page", WaitingPage);
+customElements.define("x-refused-page", RefusedPage);

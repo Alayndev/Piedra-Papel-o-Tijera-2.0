@@ -1,4 +1,4 @@
-class WaitingPage extends HTMLElement {
+class GamePage extends HTMLElement {
   shadow: ShadowRoot;
 
   constructor() {
@@ -21,4 +21,4 @@ class WaitingPage extends HTMLElement {
   }
 }
 
-customElements.define("x-waiting-page", WaitingPage);
+customElements.define("x-game-page", GamePage);

@@ -4,4 +4,24 @@
 
 body {
   margin: 0;
+  background-image: url(./images/background-img.png);
+  font-family: "Odibee Sans";
+}
+
+#root {
+  max-width: 400px;
+  margin: 0 auto;
+  width: 75%;
+}
+
+@media (min-height: 639px) {
+  #root {
+    height: 1000px;
+  }
+}
+
+@media (min-height: 739px) {
+  #root {
+    height: 1150px;
+  }
 }

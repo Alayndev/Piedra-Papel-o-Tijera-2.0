@@ -1,4 +1,4 @@
-class WaitingPage extends HTMLElement {
+class LosePage extends HTMLElement {
   shadow: ShadowRoot;
 
   constructor() {
@@ -21,4 +21,4 @@ class WaitingPage extends HTMLElement {
   }
 }
 
-customElements.define("x-waiting-page", WaitingPage);
+customElements.define("x-lose-page", LosePage);
