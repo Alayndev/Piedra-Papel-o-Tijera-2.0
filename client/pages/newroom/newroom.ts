@@ -42,6 +42,9 @@ class NewRoomPage extends HTMLElement {
         border-radius: 10px;
         height: 40px;
         padding: 20px;
+        text-align: center;
+        font-family: "Odibee Sans";
+        font-size: 20px;
       }
 
       .hands-container {
