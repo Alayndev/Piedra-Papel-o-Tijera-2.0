@@ -151,8 +151,8 @@ app.get("/gamerooms/:roomId", (req, res) => {
 // ADAPTAR CON /rooms DEL CAP. 5 TEORIA -- OK
 // Repasar métodos Firestore y Rtdb con docs -- OK
 // Revisar y probar en Postman -- OK
-// Crear método para consumir este endpoint en state --
-// Consumirlo desde la page --
+// Crear método para consumir este endpoint en state -- OK
+// Consumirlo desde la page -- OK
 // Deploy
 
 // EJEMPLO: http://localhost:3000/gameroomsscores/JM1112
@@ -163,7 +163,7 @@ app.get("/gameroomsscores/:roomid", (req, res) => {
 
   gameroomsDocRef.get().then((snap) => {
     const actualData = snap.data();
-    res.json(actualData.score);
+    res.json(actualData.score); // SOLAMENTE el score, así mantenemos oculto el Id de la RTDB ( rtdbRoomId )
   });
 });
 

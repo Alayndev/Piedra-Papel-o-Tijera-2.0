@@ -47,13 +47,11 @@ class HomePage extends HTMLElement {
   addListeners() {
     const newGameButton = this.shadow.querySelector(".newgame-button");
     newGameButton.addEventListener("click", () => {
-      console.log("Holis");
       Router.go("/newroom");
     });
 
     const enterRoomButton = this.shadow.querySelector(".enter-room-button");
     enterRoomButton.addEventListener("click", () => {
-      console.log("Caca");
       Router.go("/enterroom");
     });
   }

@@ -103,7 +103,7 @@ class NewRoomPage extends HTMLElement {
               const getRoomPromise = state.getGameRoomLongId();
 
               getRoomPromise.then((res) => {
-                state.connectToGamerooms();
+                state.connectRTDBGamerooms();
 
                 // const conectionListener = setInterval(() => {
                 //   if (state.currentGameFlag() && state.currentScoreFlag()) {

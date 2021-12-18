@@ -147,24 +147,17 @@ const state = {
   // Tiene que estar en currentGame lo de la RTDB -- en roomScore el score de Doc JR1112 de la Coll Gamerooms Firestore
 
   // IMPORTA LA DATA DEL GAMEROOM RTDB Y ESCUCHA LOS CAMBIOS
-  connectToGamerooms() {
+  connectRTDBGamerooms() {
     const cs = this.getState();
 
-    console.log("llegas hasta acá?"); // Si, llega
-
-    // Ref a la Gameroom en la RTDB ( rtdbRoomId == nanoid )
-    const chatroomRef = rtdb.ref(
+    const gameRoomRef = rtdb.ref(
       "/gamerooms/" + cs.rtdbRoomId + "/currentgame"
     );
 
-    // ACÁ ALGO FALLA !!!! 1) Ver cap. 5 Rooms - 2) Ver Discord Rooms que pasaba esto y pasaron un link
-    // Escuchamos los cambios y se los cargamos la State
-    chatroomRef.on("value", (snapshot) => {
-      console.log("Hola, conectas a la rtdb?");
-
+    gameRoomRef.on("value", (snapshot) => {
       const gameRoomData = snapshot.val();
+      console.log(gameRoomData);
 
-      // CARGA LA DATA EN EL STATE (chequear si con linea 174 es suficiente y se guarda algo en currentGame)
       cs.currentGame = gameRoomData;
       this.setState(cs);
 
@@ -181,7 +174,7 @@ const state = {
   // EJEMPLO: http://localhost:3000/gameroomsscores/JM1112
   importGameRoomScore() {
     const cs = this.getState();
-    console.log(cs.roomId, "llamada API");
+    console.log(cs.roomId, "llamada API -- GET /gameroomsscores/:roomId");
 
     return fetch(API_URL + "/gameroomsscores/" + cs.roomId, {
       method: "get",
