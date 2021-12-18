@@ -131,12 +131,6 @@ app.get("/gamerooms/:roomId", function (req, res) {
     });
 });
 // DEVUELVE EL SCORE DE LA BASE DE DATOS DE FIRESTORE
-// ADAPTAR CON /rooms DEL CAP. 5 TEORIA -- OK
-// Repasar métodos Firestore y Rtdb con docs -- OK
-// Revisar y probar en Postman -- OK
-// Crear método para consumir este endpoint en state -- OK
-// Consumirlo desde la page -- OK
-// Deploy
 // EJEMPLO: http://localhost:3000/gameroomsscores/JM1112
 app.get("/gameroomsscores/:roomid", function (req, res) {
     var gameRoomIdFirstore = req.params.roomid; // Me pasan la roomId Firestore, el Doc de la Coll Gamerooms
@@ -146,6 +140,38 @@ app.get("/gameroomsscores/:roomid", function (req, res) {
         res.json(actualData.score); // SOLAMENTE el score, así mantenemos oculto el Id de la RTDB ( rtdbRoomId )
     });
 });
+// CONECTA A LOS JUGADORES AL GAMEROOM
+// OBJETIVO: ACTUALIZO RTDB, RECIBE UN PLAYER Y LE ACTUALIZA ( lo que recibe en body ) online: true - playerName: userName ingresado en el input
+app.patch("/gamedata/:gameroomId", function (req, res) {
+    var player = req.query.player;
+    var gameroomId = req.params.gameroomId;
+    var body = req.body;
+    // Ref al player a actualizar en la Rtdb
+    var playerRef = database_1.realtimeDB.ref("/gamerooms/" + gameroomId + "/currentgame/" + player);
+    return playerRef.update(body, function () {
+        res.status(201).json({ message: player + " connected" });
+    });
+});
+// CREO QUE SERÍA PATCH
+// OBJETIVO: AGREGAR EL SCORE Y EL NOMBRE INICIAL DEL PLAYER 2 A FIRESTORE
+app.patch("/gameroomsscore/:roomid", function (req, res) {
+    var gameRoomId = req.params.roomid;
+    var playerName = req.body.playerName;
+    var gameroomsDocRef = gameroomsCollRef.doc(gameRoomId.toString());
+    gameroomsDocRef.get().then(function (snap) {
+        var actualData = snap.data();
+        console.log(actualData);
+        actualData.score["player2"] = {
+            name: playerName,
+            score: 0
+        };
+        gameroomsDocRef.update(actualData).then(function () {
+            res.json({
+                message: "Player2 score updated"
+            });
+        });
+    });
+});
 app.use(express.static("dist"));
 app.get("*", function (req, res) {
     res.sendFile("".concat(dist));
@@ -153,3 +179,9 @@ app.get("*", function (req, res) {
 app.listen(port, function () {
     console.log("Example app listening at http://localhost:".concat(port));
 });
+// ADAPTAR CON CAP. 5 TEORIA -- OK
+// Repasar métodos Firestore y Rtdb con docs -- OK --> https://firebase.google.com/docs/reference/js/v8/firebase.database.Reference
+// Revisar y probar en Postman -- OK
+// Crear método para consumir este endpoint en state --
+// Consumirlo desde la page --
+// Deploy

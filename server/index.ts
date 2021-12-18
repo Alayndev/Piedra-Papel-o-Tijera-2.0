@@ -177,6 +177,32 @@ app.patch("/gamedata/:gameroomId", function (req, res) {
   });
 });
 
+// CREO QUE SERÍA PATCH
+// OBJETIVO: AGREGAR EL SCORE Y EL NOMBRE INICIAL DEL PLAYER 2 A FIRESTORE
+app.patch("/gameroomsscore/:roomid", (req, res) => {
+  const gameRoomId = req.params.roomid;
+  const playerName = req.body.playerName;
+
+  const gameroomsDocRef = gameroomsCollRef.doc(gameRoomId.toString());
+
+  gameroomsDocRef.get().then((snap) => {
+    const actualData = snap.data();
+
+    console.log(actualData);
+
+    actualData.score["player2"] = {
+      name: playerName,
+      score: 0,
+    };
+
+    gameroomsDocRef.update(actualData).then(() => {
+      res.json({
+        message: "Player2 score updated",
+      });
+    });
+  });
+});
+
 app.use(express.static("dist"));
 
 app.get("*", (req, res) => {
@@ -190,6 +216,6 @@ app.listen(port, () => {
 // ADAPTAR CON CAP. 5 TEORIA -- OK
 // Repasar métodos Firestore y Rtdb con docs -- OK --> https://firebase.google.com/docs/reference/js/v8/firebase.database.Reference
 // Revisar y probar en Postman -- OK
-// Crear método para consumir este endpoint en state -- OK
-// Consumirlo desde la page -- OK
+// Crear método para consumir este endpoint en state --
+// Consumirlo desde la page --
 // Deploy

@@ -135,7 +135,7 @@ const state = {
     }
   },
 
-  // OBJETIVO: currentGame: RTDB currentgame -- roomScore: Firestore Gamerooms Coll score
+  // OBJETIVO: currentGame: RTDB currentgame -- roomScore: Firestore Gamerooms Coll score con importGameRoomScore() (quizá score debería llevarlo RTDB)
   connectRTDBGamerooms() {
     const cs = this.getState();
 
@@ -152,6 +152,7 @@ const state = {
 
       const fireBaseScorePromise = state.importGameRoomScore();
 
+      // roomScore
       fireBaseScorePromise.then((scoreData) => {
         cs.roomScore = scoreData;
         this.setState(cs);
@@ -160,24 +161,26 @@ const state = {
   },
 
   // DEVUELVE EL SCORE DE LA BASE DE DATOS DE FIRESTORE
-  // EJEMPLO: http://localhost:3000/gameroomsscores/JM1112
+  // OBJETIVO: roomScore: Firestore Gamerooms Coll score, roomId es el ID de ese Doc de la Coll Gamerooms ( JM1234 )
   importGameRoomScore() {
     const cs = this.getState();
     console.log(cs.roomId, "llamada API -- GET /gameroomsscores/:roomId");
 
-    return fetch(API_URL + "/gameroomsscores/" + cs.roomId, {
-      method: "get",
-      headers: { "content-type": "application/json" },
-    })
-      .then((res) => {
-        return res.json();
+    if (cs.roomId) {
+      return fetch(API_URL + "/gameroomsscores/" + cs.roomId, {
+        method: "get",
+        headers: { "content-type": "application/json" },
       })
-      .then((json) => {
-        return json;
-      });
+        .then((res) => {
+          return res.json();
+        })
+        .then((json) => {
+          return json;
+        });
+    }
   },
 
-  // ENTENDER
+  //
   redirectPlayers() {
     const cs = state.getState();
     const currentGame = cs.currentGame;
@@ -210,7 +213,6 @@ const state = {
     ) {
       // SE VUELVEN A PEDIR LOS DATOS AL STATE
       const cs = state.getState();
-      const actualRoomId = cs.roomId;
       const stateName = cs.userName;
 
       const newUserScoreData = {
@@ -218,10 +220,7 @@ const state = {
       };
 
       // SE REALIZA LA PROMESA PARA AGREGAR AL NUEVO JUGADOR A LOS SCORES DE FIREBASE
-      const player2ScorePromise = state.setPlayer2Score(
-        newUserScoreData,
-        actualRoomId
-      );
+      const player2ScorePromise = state.setPlayer2Score(newUserScoreData);
 
       // PROMESA DE CONEXIÓN DEL JUGADOR 2
       player2ScorePromise.then(() => {
@@ -293,12 +292,16 @@ const state = {
       playerName: playerName,
     };
 
-    // ACTUALIZA LA DATA DENTRO DE LA RTDB - PATCH DEBERÍA SER
-    return fetch(API_URL + "/gamedata/" + gameRoomId + "?player=" + player, {
-      headers: { "content-type": "application/json" },
-      method: "PATCH",
-      body: JSON.stringify(connectedUserData),
-    });
+    console.log("connectPlayer()");
+
+    // ACTUALIZA LA DATA DENTRO DE LA RTDB
+    if (cs.rtdbRoomId) {
+      return fetch(API_URL + "/gamedata/" + gameRoomId + "?player=" + player, {
+        headers: { "content-type": "application/json" },
+        method: "PATCH",
+        body: JSON.stringify(connectedUserData),
+      });
+    }
   },
 
   // DEVUELVE LA REFEFENCIA DE LA POSICIÓN DEL USUARIO QUE ESTA CONECTADO ACTUALMENTE
@@ -314,19 +317,25 @@ const state = {
     return sessionUser;
   },
 
-  // AGREGA EL SCORE DEL PLAYER 2 A FIRESTORE UNA VEZ QUE SE AGREGA UN SEGUNDO JUGADOR A LA SALA
-  setPlayer2Score(playerData, roomId) {
-    return fetch(API_URL + "/gameroomsscore/" + roomId, {
-      method: "post",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(playerData),
-    })
-      .then((res) => {
-        return res.json();
+  // OBJETIVO: AGREGAR EL SCORE Y EL NOMBRE INICIAL DEL PLAYER 2 A FIRESTORE
+  setPlayer2Score(playerData) {
+    const cs = state.getState();
+
+    console.log("Llamada a la API con setPlayer2Score()");
+
+    if (cs.roomId) {
+      return fetch(API_URL + "/gameroomsscore/" + cs.roomId, {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(playerData),
       })
-      .then((finalres) => {
-        return finalres;
-      });
+        .then((res) => {
+          return res.json();
+        })
+        .then((json) => {
+          return json;
+        });
+    }
   },
 
   // askNewRoom() {
