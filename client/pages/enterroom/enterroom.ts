@@ -1,3 +1,5 @@
+import { state } from "../../state";
+
 class EnterRoomPage extends HTMLElement {
   shadow: ShadowRoot;
 
@@ -64,7 +66,82 @@ class EnterRoomPage extends HTMLElement {
     this.shadow.appendChild(pageStyles);
   }
 
-  addListeners() {}
+  // SOLAMENTE QUEDAN LOS LISTENERS - Paso a paso igual que antes, ir de a poco, comentando el resto
+  // NO ESTA ENTRANDO EL addEventListener 
+  // ACÁ DEJO: PROBAR POST /auth DESDE FRONT CON getNameAuth() -- Ver pasos en Back
+  addListeners() {
+    const pageForm = this.shadow.querySelector(".form");
+    pageForm.addEventListener("submit", (e: any) => {
+      e.preventDefault();
+
+      console.log("hola?");
+
+      const target = e.target as any;
+
+      const roomCode = target.roomcode.value; // Puede que no lo necesite
+      const userName = target.username.value;
+      console.log(userName);
+
+      state.setUserName(userName);
+
+      const userData = {
+        userName: userName,
+      };
+
+      const nameAuthPromise = state.getNameAuth(userData);
+
+      nameAuthPromise.then((res) => {
+        // SI EL NOMBRE NO EXISTE, CREA EL NUEVO USER Y SE AUTENTICA CON ESE ID
+        if (res.message) {
+          const newUserPromise = state.signUp(userData);
+
+          newUserPromise.then((res) => {
+            if (res.userId) {
+              const getGameRoomPromise = state.getGameRoomLongId();
+
+              getGameRoomPromise.then((res) => {
+                if (res.message) {
+                  alert(res.message);
+                }
+
+                if (res.rtdbRoomId) {
+                  state.connectRTDBGamerooms();
+
+                  const conectionListener = setInterval(() => {
+                    if (state.currentGameFlag() && state.currentScoreFlag()) {
+                      clearInterval(conectionListener);
+                      state.redirectPlayers();
+                    }
+                  }, 500);
+                }
+              });
+            }
+          });
+        }
+
+        if (res.userId) {
+          const getGameRoomPromise = state.getGameRoomLongId();
+
+          getGameRoomPromise.then((res) => {
+            if (res.message) {
+              alert(res.message);
+            }
+
+            if (res.rtdbRoomId) {
+              state.connectRTDBGamerooms();
+
+              const conectionListener = setInterval(() => {
+                if (state.currentGameFlag() && state.currentScoreFlag()) {
+                  clearInterval(conectionListener);
+                  state.redirectPlayers();
+                }
+              }, 500);
+            }
+          });
+        }
+      });
+    });
+  }
 
   connectedCallback() {
     this.render();
@@ -79,7 +156,8 @@ class EnterRoomPage extends HTMLElement {
       
       <form class="form" >
         <label class="label-user-name" > <br />
-          <input class="input-user-name" type="text" name="username" placeholder="CODIGO" required />
+          <input class="input-user-name" type="text" name="username" placeholder="User Name" required />
+          <input class="input-user-name" type="text" name="roomcode" placeholder="CODIGO" required />
         </label>
 
         <br />

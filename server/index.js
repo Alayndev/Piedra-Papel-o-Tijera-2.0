@@ -172,6 +172,26 @@ app.patch("/gameroomsscore/:roomid", function (req, res) {
         });
     });
 });
+// PREGUNTAR EN DISCORD SI NO DEBERÍA SER GET (ya que obtenemos el id del doc) Y RECIBIR EL userName/email por query string o params, ya que GET no recibe body 
+// AUTHENTICATION: RECIBE EL userName DEL USUARIO Y DEVUELVE SU USER ID  (id del Doc de la Coll Users de Firestore)
+app.post("/auth", function (req, res) {
+    var userName = req.body.userName;
+    usersCollRef
+        .where("userName", "==", userName)
+        .get()
+        .then(function (querySnapshot) {
+        if (querySnapshot.empty) {
+            res.status(404).json({
+                message: "El nombre que ingresaste no corresponde a un usuario registrado."
+            });
+        }
+        else {
+            res.status(200).json({
+                userId: querySnapshot.docs[0].id
+            });
+        }
+    });
+});
 app.use(express.static("dist"));
 app.get("*", function (req, res) {
     res.sendFile("".concat(dist));

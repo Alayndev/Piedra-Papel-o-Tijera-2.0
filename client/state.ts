@@ -338,84 +338,30 @@ const state = {
     }
   },
 
-  // askNewRoom() {
-  //   const cs = this.getState();
+  // CREO QUE DEBERÍA SER GET
+  // Tiene sentido teniendo /singup ? Para que ambas? Tiene sentido porque /auth esta en enterroom.ts ya que es para usuarios ya resgitrados
+  // AGREGAR: if (cs.userName)
+  // INGRESA EL userName DEL USUARIO Y RECIBE SU USER ID (id del Doc de la Coll Users de Firestore)
+  getNameAuth(userName) {
+    const cs = state.getState();
 
-  //   if (cs.userId) {
-  //     fetch(API_URL + "/rooms", {
-  //       method: "POST",
-  //       headers: {
-  //         "content-type": "application/json",
-  //       },
-  //       body: JSON.stringify({ userId: cs.userId }),
-  //     })
-  //       .then((res) => res.json())
-  //       .then((json) => {
-  //         console.log(json);
+    return fetch(API_URL + "/auth", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(userName),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((json) => {
+        console.log(json);
 
-  //         cs.roomId = json.roomIdFirestore;
+        cs.userId = json.userId;
+        this.setState(cs);
 
-  //         this.setState(cs);
-
-  //         this.accessToRoom();
-  //       });
-  //   } else {
-  //     console.error("No hay userId");
-  //   }
-  // },
-
-  // accessToRoom() {
-  //   const cs = this.getState();
-
-  //   if (cs.roomId) {
-  //     fetch(API_URL + "/rooms/" + cs.roomId + "/?userId=" + cs.userId)
-  //       .then((res) => res.json())
-  //       .then((json) => {
-  //         console.log(json);
-
-  //         cs.rtdbRoomId = json.rtdbRoomLongId;
-  //         this.setState(cs);
-
-  //         this.listenRoom();
-  //         console.log("hola");
-  //       });
-  //   } else {
-  //     console.error(
-  //       "No hay roomId (id corto de doc de la coll rooms de Firestore)"
-  //     );
-  //   }
-  // },
-
-  // listenRoom() {
-  //   const cs = this.getState();
-
-  //   const chatroomRef = rtdb.ref("/rooms/" + cs.rtdbRoomId);
-
-  //   chatroomRef.on("value", (snapshot) => {
-  //     const messagesFromServer = snapshot.val();
-  //     console.log(messagesFromServer);
-
-  //     const messagesList = map(messagesFromServer.messages);
-  //     cs.messages = messagesList;
-
-  //     this.setState(cs);
-  //     console.log(messagesList);
-  //   });
-  // },
-
-  // pushMessage(message: string) {
-  //   fetch(API_URL + "/messages", {
-  //     method: "post",
-  //     headers: {
-  //       "content-type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       from: this.data.userName,
-  //       message: message,
-  //       roomIdRtdb: this.data.rtdbRoomId,
-  //     }),
-  //   });
-  // },
+        return json;
+      });
+  },
 };
 
 export { state };
