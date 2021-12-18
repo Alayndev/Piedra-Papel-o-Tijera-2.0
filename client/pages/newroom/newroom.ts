@@ -105,12 +105,12 @@ class NewRoomPage extends HTMLElement {
               getRoomPromise.then((res) => {
                 state.connectRTDBGamerooms();
 
-                // const conectionListener = setInterval(() => {
-                //   if (state.currentGameFlag() && state.currentScoreFlag()) {
-                //     clearInterval(conectionListener);
-                //     state.redirectPlayers();
-                //   }
-                // }, 500);
+                const conectionListener = setInterval(() => {
+                  if (state.currentGameFlag() && state.currentScoreFlag()) {
+                    clearInterval(conectionListener);
+                    state.redirectPlayers();
+                  }
+                }, 200);
               });
             }
           });

@@ -148,13 +148,6 @@ app.get("/gamerooms/:roomId", (req, res) => {
 });
 
 // DEVUELVE EL SCORE DE LA BASE DE DATOS DE FIRESTORE
-// ADAPTAR CON /rooms DEL CAP. 5 TEORIA -- OK
-// Repasar métodos Firestore y Rtdb con docs -- OK
-// Revisar y probar en Postman -- OK
-// Crear método para consumir este endpoint en state -- OK
-// Consumirlo desde la page -- OK
-// Deploy
-
 // EJEMPLO: http://localhost:3000/gameroomsscores/JM1112
 app.get("/gameroomsscores/:roomid", (req, res) => {
   const gameRoomIdFirstore = req.params.roomid; // Me pasan la roomId Firestore, el Doc de la Coll Gamerooms
@@ -167,6 +160,23 @@ app.get("/gameroomsscores/:roomid", (req, res) => {
   });
 });
 
+// CONECTA A LOS JUGADORES AL GAMEROOM
+// OBJETIVO: ACTUALIZO RTDB, RECIBE UN PLAYER Y LE ACTUALIZA ( lo que recibe en body ) online: true - playerName: userName ingresado en el input
+app.patch("/gamedata/:gameroomId", function (req, res) {
+  const player = req.query.player;
+  const gameroomId = req.params.gameroomId;
+  const body = req.body;
+
+  // Ref al player a actualizar en la Rtdb
+  const playerRef = realtimeDB.ref(
+    "/gamerooms/" + gameroomId + "/currentgame/" + player
+  );
+
+  return playerRef.update(body, () => {
+    res.status(201).json({ message: player + " connected" });
+  });
+});
+
 app.use(express.static("dist"));
 
 app.get("*", (req, res) => {
@@ -176,3 +186,10 @@ app.get("*", (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
+
+// ADAPTAR CON CAP. 5 TEORIA -- OK
+// Repasar métodos Firestore y Rtdb con docs -- OK --> https://firebase.google.com/docs/reference/js/v8/firebase.database.Reference
+// Revisar y probar en Postman -- OK
+// Crear método para consumir este endpoint en state -- OK
+// Consumirlo desde la page -- OK
+// Deploy

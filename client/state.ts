@@ -135,18 +135,7 @@ const state = {
     }
   },
 
-  // ACÁ DEJO:
-  // Endpoint GET /gameroomsscores/:roomid funciona en Postman
-  // Falta consumirlo desde state y page ( ver pasos en API )
-  // Hacer conexión con la Rtdb en state ( ver linea 159 ) y dentro de esta conexión hacer la llamada HTTP a dicha API con importGameRoomScore()
-  // Guardar en currentGame (RTDB) y en roomScore (Firestore Coll Gamerooms score) lo indicado en linea 146
-
-  // PROBAR:
-  // 1) Si se conecta a la rtdb. Probar si efectivamente nos conectamos a la Rtdb y escuchamos los cambios (hacerlo manual quizá)
-  // 2) Por qué no hace la llamada HTTP con importGameRoomScore() a la API/Back?
-  // Tiene que estar en currentGame lo de la RTDB -- en roomScore el score de Doc JR1112 de la Coll Gamerooms Firestore
-
-  // IMPORTA LA DATA DEL GAMEROOM RTDB Y ESCUCHA LOS CAMBIOS
+  // OBJETIVO: currentGame: RTDB currentgame -- roomScore: Firestore Gamerooms Coll score
   connectRTDBGamerooms() {
     const cs = this.getState();
 
@@ -188,151 +177,157 @@ const state = {
       });
   },
 
-  // redirectPlayers() {
-  //   const cs = state.getState();
-  //   const currentGame = cs.currentGame;
-  //   const statePlayerName = cs.playerName;
-  //   const playersData = Object.values(currentGame);
+  // ENTENDER
+  redirectPlayers() {
+    const cs = state.getState();
+    const currentGame = cs.currentGame;
+    const statePlayerName = cs.userName;
+    const playersData = Object.values(currentGame);
 
-  //   //  SE PIDE UNA REFERENCIA DE LOS USUARIOS YA REGISTRADOS
-  //   const registeredPlayer = playersData.find((player) => {
-  //     return player["userName"].includes(statePlayerName);
-  //   });
+    //  SE PIDE UNA REFERENCIA DE LOS USUARIOS YA REGISTRADOS
+    const registeredPlayer = playersData.find((player) => {
+      return player["playerName"].includes(statePlayerName);
+    });
 
-  //   // SI EL PLAYER 1 ESTA DESCONECTADO Y NO REGISTRADO LO CONECTA AL PLAYER 1
-  //   if (
-  //     currentGame.player1.playerName == "none" &&
-  //     currentGame.player1.online == false
-  //   ) {
-  //     // PROMESA DE CONEXIÓN DEL JUGADOR 1
-  //     const playerConnectionPromise = state.connectPlayer("player1");
-  //     playerConnectionPromise.then(() => {
-  //       Router.go("/waitingroom");
-  //     });
-  //   }
+    // SI EL PLAYER 1 ESTA DESCONECTADO Y NO REGISTRADO LO CONECTA AL PLAYER 1
+    if (
+      currentGame.player1.playerName == "none" &&
+      currentGame.player1.online == false
+    ) {
+      // PROMESA DE CONEXIÓN DEL JUGADOR 1
+      const playerConnectionPromise = state.connectPlayer("player1");
+      playerConnectionPromise.then(() => {
+        Router.go("/waitingroom");
+      });
+    }
 
-  //   // SI EL PLAYER 1 ESTA CONECTADO Y REGISTRADO & EL 2 DESCONECTADO Y SIN REGISTRAR, LO REGISTRA/CONECTA AL PLAYER 2 EN AMBAS DB
-  //   else if (
-  //     currentGame.player1.playerName !== "none" &&
-  //     currentGame.player1.online !== false &&
-  //     currentGame.player2.playerName === "none" &&
-  //     currentGame.player2.online === false
-  //   ) {
-  //     // SE VUELVEN A PEDIR LOS DATOS AL STATE
-  //     const cs = state.getState();
-  //     const actualRoomId = cs.roomId;
-  //     const stateName = cs.playerName;
+    // SI EL PLAYER 1 ESTA CONECTADO Y REGISTRADO & EL 2 DESCONECTADO Y SIN REGISTRAR, LO REGISTRA/CONECTA AL PLAYER 2 EN AMBAS DB
+    else if (
+      currentGame.player1.playerName !== "none" &&
+      currentGame.player1.online !== false &&
+      currentGame.player2.playerName === "none" &&
+      currentGame.player2.online === false
+    ) {
+      // SE VUELVEN A PEDIR LOS DATOS AL STATE
+      const cs = state.getState();
+      const actualRoomId = cs.roomId;
+      const stateName = cs.userName;
 
-  //     const newUserScoreData = {
-  //       playerName: stateName,
-  //     };
+      const newUserScoreData = {
+        playerName: stateName,
+      };
 
-  //     // SE REALIZA LA PROMESA PARA AGREGAR AL NUEVO JUGADOR A LOS SCORES DE FIREBASE
-  //     const player2ScorePromise = state.setPlayer2Score(
-  //       newUserScoreData,
-  //       actualRoomId
-  //     );
+      // SE REALIZA LA PROMESA PARA AGREGAR AL NUEVO JUGADOR A LOS SCORES DE FIREBASE
+      const player2ScorePromise = state.setPlayer2Score(
+        newUserScoreData,
+        actualRoomId
+      );
 
-  //     // PROMESA DE CONEXIÓN DEL JUGADOR 2
-  //     player2ScorePromise.then(() => {
-  //       const playerConnectionPromise = state.connectPlayer("player2");
-  //       playerConnectionPromise.then(() => {
-  //         Router.go("/waitingroom");
-  //       });
-  //     });
-  //   }
+      // PROMESA DE CONEXIÓN DEL JUGADOR 2
+      player2ScorePromise.then(() => {
+        const playerConnectionPromise = state.connectPlayer("player2");
 
-  //   // SI AMBOS USUARIOS ESTAN DECONECTADOS
-  //   else if (
-  //     currentGame.player1.online === false ||
-  //     currentGame.player2.online === false
-  //   ) {
-  //     // VERIFICA QUE SI ESTAN REGISTRADOS SE CONECTAN Y PASAN AL WAITING ROOM
-  //     if (registeredPlayer) {
-  //       state.connectPlayer(state.getSessionUserRef()[0]);
-  //       Router.go("/waitingroom");
-  //     }
-  //     // SI NO ESTAN REGISTRADOS SE VAN A REFUSED
-  //     if (!registeredPlayer) {
-  //       Router.go("/refused");
-  //     }
-  //   }
+        playerConnectionPromise.then(() => {
+          Router.go("/waitingroom");
+        });
+      });
+    }
 
-  //   // SI AMBOS PLAYERS ESTAN CONECTADOS Y REGISTRADOS
-  //   else if (
-  //     currentGame.player1.online === true &&
-  //     currentGame.player2.online === true
-  //   ) {
-  //     // REVISA QUE EL USUARIO INGRESE EL NOMBRE DE ALGUN USUARIO REGISTRADO, DE NO SER ASÍ, LO ENVIA A /REFUSED
-  //     registeredPlayer ? Router.go("/waitingroom") : Router.go("/refused");
-  //   }
-  // },
+    // SI AMBOS USUARIOS ESTAN DECONECTADOS
+    else if (
+      currentGame.player1.online === false ||
+      currentGame.player2.online === false
+    ) {
+      // VERIFICA QUE SI ESTAN REGISTRADOS SE CONECTAN Y PASAN AL WAITING ROOM
+      if (registeredPlayer) {
+        state.connectPlayer(state.getSessionUserRef()[0]);
+        Router.go("/waitingroom");
+      }
+      // SI NO ESTAN REGISTRADOS SE VAN A REFUSED
+      if (!registeredPlayer) {
+        Router.go("/refused");
+      }
+    }
 
-  // // VERIFICA QUE SI HAY PLAYER 1 Y PLAYER 2 EN CURRENT GAME, DEVUELVA UN TRUE
-  // currentGameFlag() {
-  //   let cs = state.getState();
-  //   let currentGame = cs.currentGame;
-  //   if (currentGame.player1 && currentGame.player2) {
-  //     return true;
-  //   }
-  // },
+    // SI AMBOS PLAYERS ESTAN CONECTADOS Y REGISTRADOS
+    else if (
+      currentGame.player1.online === true &&
+      currentGame.player2.online === true
+    ) {
+      // REVISA QUE EL USUARIO INGRESE EL NOMBRE DE ALGUN USUARIO REGISTRADO, DE NO SER ASÍ, LO ENVIA A /REFUSED
+      registeredPlayer ? Router.go("/waitingroom") : Router.go("/refused");
+    }
+  },
 
-  // // VERIFICA QUE EL ROOMSCORE NO ESTE VACIO DEVOLVIENDO TRUE DE SER ASÍ
-  // currentScoreFlag() {
-  //   let cs = state.getState();
-  //   let currentScore = cs.roomScore;
-  //   if (currentScore !== null) {
-  //     return true;
-  //   }
-  // },
+  // VERIFICA QUE SI HAY PLAYER 1 Y PLAYER 2 EN CURRENT GAME, DEVUELVA UN TRUE
+  currentGameFlag() {
+    let cs = state.getState();
+    let currentGame = cs.currentGame;
+    if (currentGame.player1 && currentGame.player2) {
+      return true;
+    }
+  },
 
-  // // CONECTA A LOS JUGADORES A LA GAMEROOM
-  // connectPlayer(player: string) {
-  //   const currentState = this.getState();
-  //   const currentGameData = currentState.currentGame[`${player}`];
+  // VERIFICA QUE EL ROOMSCORE NO ESTE VACIO DEVOLVIENDO TRUE DE SER ASÍ
+  currentScoreFlag() {
+    let cs = state.getState();
+    let currentScore = cs.roomScore;
+    if (currentScore !== null) {
+      return true;
+    }
+  },
 
-  //   const gameRoomId = currentState.roomIdLong;
-  //   const playerName = currentState.playerName;
+  // CONECTA A LOS JUGADORES A LA GAMEROOM
+  // OBJETIVO: ACTUALIZO RTDB, RECIBE UN PLAYER Y LE ACTUALIZA online: true - playerName: userName ingresado en el input
+  // DE ESTE MODO, currentGame QUEDA EN EL STATE CON player1/player2 online:true - playerName: lo ingresado en el input
+  connectPlayer(player: string) {
+    const cs = this.getState();
+    const currentGameData = cs.currentGame[`${player}`];
 
-  //   const connectedUserData = {
-  //     ...currentGameData,
-  //     online: true,
-  //     playerName: playerName,
-  //   };
+    const gameRoomId = cs.rtdbRoomId;
+    const playerName = cs.userName;
 
-  //   // ACTUALIZA LA DATA DENTRO DE LA RTDB
-  //   return fetch(API_URL + "/gamedata/" + gameRoomId + "?player=" + player, {
-  //     headers: { "content-type": "application/json" },
-  //     method: "post",
-  //     body: JSON.stringify(connectedUserData),
-  //   });
-  // },
+    const connectedUserData = {
+      ...currentGameData,
+      online: true,
+      playerName: playerName,
+    };
 
-  // // DEVUELVE LA REFEFENCIA DE LA POSICIÓN DEL USUARIO QUE ESTA CONECTADO ACTUALMENTE
-  // getSessionUserRef() {
-  //   const cs = state.getState();
-  //   const cg = cs.currentGame;
-  //   const result = Object.entries(cg);
-  //   const sessionUser = result.find((player) => {
-  //     return player[1]["playerName"] === state.getState().playerName;
-  //   });
-  //   return sessionUser;
-  // },
+    // ACTUALIZA LA DATA DENTRO DE LA RTDB - PATCH DEBERÍA SER
+    return fetch(API_URL + "/gamedata/" + gameRoomId + "?player=" + player, {
+      headers: { "content-type": "application/json" },
+      method: "PATCH",
+      body: JSON.stringify(connectedUserData),
+    });
+  },
 
-  // // AGREGA EL SCORE DEL PLAYER 2 A FIRESTORE UNA VEZ QUE SE AGREGA UN SEGUNDO JUGADOR A LA SALA
-  // setPlayer2Score(playerData, roomId) {
-  //   return fetch(API_URL + "/gameroomsscore/" + roomId, {
-  //     method: "post",
-  //     headers: { "content-type": "application/json" },
-  //     body: JSON.stringify(playerData),
-  //   })
-  //     .then((res) => {
-  //       return res.json();
-  //     })
-  //     .then((finalres) => {
-  //       return finalres;
-  //     });
-  // },
+  // DEVUELVE LA REFEFENCIA DE LA POSICIÓN DEL USUARIO QUE ESTA CONECTADO ACTUALMENTE
+  getSessionUserRef() {
+    const cs = state.getState();
+    const cg = cs.currentGame;
+    const result = Object.entries(cg);
+
+    const sessionUser = result.find((player) => {
+      return player[1]["playerName"] === state.getState().userName;
+    });
+
+    return sessionUser;
+  },
+
+  // AGREGA EL SCORE DEL PLAYER 2 A FIRESTORE UNA VEZ QUE SE AGREGA UN SEGUNDO JUGADOR A LA SALA
+  setPlayer2Score(playerData, roomId) {
+    return fetch(API_URL + "/gameroomsscore/" + roomId, {
+      method: "post",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(playerData),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((finalres) => {
+        return finalres;
+      });
+  },
 
   // askNewRoom() {
   //   const cs = this.getState();
