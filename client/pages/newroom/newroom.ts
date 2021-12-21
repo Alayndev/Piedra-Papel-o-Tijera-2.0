@@ -98,7 +98,6 @@ class NewRoomPage extends HTMLElement {
             userName: userName,
           };
 
-          const newUserId = res.userId;
           const newRoomPromise = state.createNewGameRoom(newGameRoomData);
 
           newRoomPromise.then((res) => {

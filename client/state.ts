@@ -1,6 +1,9 @@
 import { rtdb } from "./rtbd";
 
-const API_URL = "http://localhost:3000"; // Esto hay que arreglarlo con un ternario o env var
+const API_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://dwf-m6-r-p-s-v2.herokuapp.com"
+    : "http://localhost:3000"; // Esto hay que arreglarlo con un ternario o env var
 
 import map from "lodash/map";
 
@@ -74,7 +77,7 @@ const state = {
       })
         .then((res) => res.json())
         .then((json) => {
-          console.log(json);
+          console.log("Hago la llamada a POST /auth : ", json);
 
           cs.userId = json.userId;
           this.setState(cs);
@@ -115,12 +118,9 @@ const state = {
     const cs = this.getState();
 
     if (cs.roomId) {
-      return fetch(
-        API_URL + "/gamerooms/" + cs.roomId + "?userId=" + cs.userId,
-        {
-          method: "get",
-        }
-      )
+      console.log("Ahora paso el if");
+
+      return fetch(API_URL + "/gamerooms/" + cs.roomId + "?userId=" + cs.userId)
         .then((res) => {
           return res.json();
         })
@@ -345,6 +345,8 @@ const state = {
   getNameAuth(userName) {
     const cs = state.getState();
 
+    console.log("Hago la llamada a POST /auth");
+
     return fetch(API_URL + "/auth", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -361,6 +363,13 @@ const state = {
 
         return json;
       });
+  },
+
+  // SETEA EL GAMEROOMID CORTO EN EL STATE (USO EN enterroom.ts - roomId lo seteo en  createNewGameRoom() en newroom.ts)
+  setGameRoomId(gameRoomId: string) {
+    const cs = this.getState();
+    cs.roomId = gameRoomId;
+    this.setState(cs);
   },
 };
 

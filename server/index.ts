@@ -16,6 +16,13 @@ const gameroomsCollRef = firestore.collection("gamerooms");
 
 const dist = path.resolve(__dirname, "../dist/", "index.html");
 
+console.log(
+  process.env.NODE_ENV === "production"
+    ? "https://dwf-m6-r-p-s-v2.herokuapp.com"
+    : "http://localhost:3000"
+);
+
+
 // ENDPOINTS
 
 // SIGNUP:
@@ -114,6 +121,7 @@ app.post("/gamerooms", (req, res) => {
 });
 
 // GETTER DEL GAMEROOM RTDB
+// DEVUELVE EL ID LARGO DE LA SALA CUANDO LE PASAS EL ID CORTO Y EL NOMBRE DE USUARIO. SETEA rtdbRoomId
 //   EJEMPLO: /gamerooms/JM1300?userId=Y5m8jxRGZTj3DoI10oqq
 app.get("/gamerooms/:roomId", (req, res) => {
   const { userId } = req.query;

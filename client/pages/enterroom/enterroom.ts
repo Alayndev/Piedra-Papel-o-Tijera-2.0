@@ -60,86 +60,114 @@ class EnterRoomPage extends HTMLElement {
           overflow: initial;
         }
       }
+
+      .submit-button {
+        width: 100%;
+        height: 87px;
+        padding: 10px;
+      
+        font-family: inherit;
+        font-size: 45px;
+      
+        color: white;
+        background-color: #006cfc;
+        border: solid 10px #09428d;
+        border-radius: 10px;          
+      }
       
     `;
 
     this.shadow.appendChild(pageStyles);
   }
 
-  // SOLAMENTE QUEDAN LOS LISTENERS - Paso a paso igual que antes, ir de a poco, comentando el resto
-  // NO ESTA ENTRANDO EL addEventListener 
-  // ACÁ DEJO: PROBAR POST /auth DESDE FRONT CON getNameAuth() -- Ver pasos en Back
-  addListeners() {
-    const pageForm = this.shadow.querySelector(".form");
-    pageForm.addEventListener("submit", (e: any) => {
-      e.preventDefault();
 
-      console.log("hola?");
+  // OBJETIVO: 1) SI EL USUARIUO NO ESTÁ LOGEADO, LOGEARLO CON POST /singup - 2) SI ESTÁ LOGEADO, DEBE INGRESAR EL USERNAME CORRECTO PARA LA GAMEROOM QUE INDIQUE, SINO IRÁ A /refused
+  addListeners() {
+    const formEl = this.shadow.querySelector(".form");
+    formEl.addEventListener("submit", (e: any) => {
+      e.preventDefault();
 
       const target = e.target as any;
 
-      const roomCode = target.roomcode.value; // Puede que no lo necesite
+      const roomCode = target.roomcode.value; // CAMBIAR A roomId QUE ES COMO ESTA EN EL STATE
       const userName = target.username.value;
-      console.log(userName);
 
-      state.setUserName(userName);
+      if (roomCode.trim() !== "" && userName.trim() !== "") {
+        state.setUserName(userName);
 
-      const userData = {
-        userName: userName,
-      };
+        const userData = {
+          userName: userName,
+        };
 
-      const nameAuthPromise = state.getNameAuth(userData);
+        const nameAuthPromise: any = state.getNameAuth(userData);
 
-      nameAuthPromise.then((res) => {
-        // SI EL NOMBRE NO EXISTE, CREA EL NUEVO USER Y SE AUTENTICA CON ESE ID
-        if (res.message) {
-          const newUserPromise = state.signUp(userData);
+        // FUNCIONA - 1) NO HAY USER - SI EL NOMBRE NO EXISTE, CREA EL NUEVO USER Y SE AUTENTICA CON ESE ID
+        nameAuthPromise.then((res) => {
+          if (res.message) {
+            const newUserPromise: any = state.signUp(userData);
 
-          newUserPromise.then((res) => {
-            if (res.userId) {
-              const getGameRoomPromise = state.getGameRoomLongId();
+            console.log(
+              "no existe el user y hay que CREARLO, newUserPromise: ",
+              newUserPromise
+            );
 
-              getGameRoomPromise.then((res) => {
-                if (res.message) {
-                  alert(res.message);
-                }
+            newUserPromise.then((res) => {
+              if (res.userId) {
+                state.setGameRoomId(roomCode);
 
-                if (res.rtdbRoomId) {
-                  state.connectRTDBGamerooms();
+                const getGameRoomPromise: any = state.getGameRoomLongId();
 
-                  const conectionListener = setInterval(() => {
-                    if (state.currentGameFlag() && state.currentScoreFlag()) {
-                      clearInterval(conectionListener);
-                      state.redirectPlayers();
-                    }
-                  }, 500);
-                }
-              });
-            }
-          });
-        }
+                console.log("getGameRoomPromise: ", getGameRoomPromise);
 
-        if (res.userId) {
-          const getGameRoomPromise = state.getGameRoomLongId();
+                getGameRoomPromise.then((res) => {
+                  if (res.message) {
+                    alert(res.message);
+                  }
 
-          getGameRoomPromise.then((res) => {
-            if (res.message) {
-              alert(res.message);
-            }
+                  if (res.rtdbRoomId) {
+                    state.connectRTDBGamerooms();
 
-            if (res.rtdbRoomId) {
-              state.connectRTDBGamerooms();
+                    const conectionListener = setInterval(() => {
+                      if (state.currentGameFlag() && state.currentScoreFlag()) {
+                        clearInterval(conectionListener);
+                        state.redirectPlayers();
+                      }
+                    }, 500);
+                  }
+                });
+              }
+            });
+          }
 
-              const conectionListener = setInterval(() => {
-                if (state.currentGameFlag() && state.currentScoreFlag()) {
-                  clearInterval(conectionListener);
-                  state.redirectPlayers();
-                }
-              }, 500);
-            }
-          });
-        }
-      });
+          // 2) FUNCIONA - HAY USER - EL USER YA EXISTE
+          if (res.userId) {
+            state.setGameRoomId(roomCode);
+
+            const getGameRoomPromise: any = state.getGameRoomLongId();
+
+            console.log("HAY userId", getGameRoomPromise);
+
+            getGameRoomPromise.then((res) => {
+              if (res.message) {
+                alert(res.message);
+              }
+
+              if (res.rtdbRoomId) {
+                state.connectRTDBGamerooms();
+
+                console.log("HAY rtdbRoomId");
+
+                const conectionListener = setInterval(() => {
+                  if (state.currentGameFlag() && state.currentScoreFlag()) {
+                    clearInterval(conectionListener);
+                    state.redirectPlayers();
+                  }
+                }, 500);
+              }
+            });
+          }
+        });
+      }
     });
   }
 
@@ -151,19 +179,20 @@ class EnterRoomPage extends HTMLElement {
     const divEl = document.createElement("div");
 
     divEl.innerHTML = `
-      <h1 class="home__title" > Piedra Papel ó Tijera </h1>
+      <h1 class="home__title" > Piedra Papel ó Tijera QUE PASAAAAAAAAAAA</h1>
         
       
       <form class="form" >
-        <label class="label-user-name" > <br />
-          <input class="input-user-name" type="text" name="username" placeholder="User Name" required />
-          <input class="input-user-name" type="text" name="roomcode" placeholder="CODIGO" required />
-        </label>
 
-        <br />
+        <input class="input-user-name" name="username" placeholder="tu nombre" required></input>
 
-        <button-comp class="start-button"> Ingresar a la sala </button-comp>
+        <input class="input-user-name" name="roomcode" placeholder="codigo" required></input>
+
+        <button class="submit-button"> Empezaremos </button>
+    
       </form>
+
+      
 
       <div class="hands-container">  
         <hand-comp handType="scissors"></hand-comp>

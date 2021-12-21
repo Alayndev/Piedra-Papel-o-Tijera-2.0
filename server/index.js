@@ -12,6 +12,9 @@ var port = process.env.PORT || 3000;
 var usersCollRef = database_1.firestore.collection("users");
 var gameroomsCollRef = database_1.firestore.collection("gamerooms");
 var dist = path.resolve(__dirname, "../dist/", "index.html");
+console.log(process.env.NODE_ENV === "production"
+    ? "https://dwf-m6-r-p-s-v2.herokuapp.com"
+    : "http://localhost:3000");
 // ENDPOINTS
 // SIGNUP:
 app.post("/signup", function (req, res) {
@@ -100,6 +103,7 @@ app.post("/gamerooms", function (req, res) {
     });
 });
 // GETTER DEL GAMEROOM RTDB
+// DEVUELVE EL ID LARGO DE LA SALA CUANDO LE PASAS EL ID CORTO Y EL NOMBRE DE USUARIO. SETEA rtdbRoomId
 //   EJEMPLO: /gamerooms/JM1300?userId=Y5m8jxRGZTj3DoI10oqq
 app.get("/gamerooms/:roomId", function (req, res) {
     var userId = req.query.userId;

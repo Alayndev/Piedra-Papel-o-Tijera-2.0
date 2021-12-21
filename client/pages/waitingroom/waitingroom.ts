@@ -1,3 +1,5 @@
+import { state } from "../../state";
+
 class WaitingPage extends HTMLElement {
   shadow: ShadowRoot;
 
@@ -13,7 +15,12 @@ class WaitingPage extends HTMLElement {
   }
 
   render() {
+    const cs = state.getState();
     const divEl = document.createElement("div");
+    divEl.innerHTML = `
+      <h1> Código de la sala ${cs.roomId} </h1> 
+      <h2> Holaaaaaaa </h2>
+    `;
 
     this.shadow.appendChild(divEl);
 
