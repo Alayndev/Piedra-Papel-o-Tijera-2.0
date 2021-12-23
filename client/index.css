@@ -13,6 +13,7 @@ body {
   margin: 0 auto;
   width: 75%;
   height: 100vh;
+  list-style: none;
 }
 
 @media (min-height: 639px) {

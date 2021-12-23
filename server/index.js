@@ -203,7 +203,7 @@ app.patch("/gamestart/:rtdbRoomId", function (req, res) {
     var body = req.body; // Spread con todo lo que había, sólo cambiamos start: true
     var playerRef = database_1.realtimeDB.ref("/gamerooms/" + rtdbRoomId + "/currentgame/" + player);
     return playerRef.update(body, function () {
-        res.status(201).json({ message: player + " listo para jugar" });
+        res.status(201).json({ message: player + "is ready to play" });
     });
 });
 app.use(express.static("dist"));

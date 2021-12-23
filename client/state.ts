@@ -246,7 +246,7 @@ const state = {
       }
       // SI NO ESTAN REGISTRADOS SE VAN A REFUSED
       if (!registeredPlayer) {
-        Router.go("/refused");
+        Router.go("/error");
       }
     }
 
@@ -255,8 +255,8 @@ const state = {
       currentGame.player1.online === true &&
       currentGame.player2.online === true
     ) {
-      // REVISA QUE EL USUARIO INGRESE EL NOMBRE DE ALGUN USUARIO REGISTRADO, DE NO SER ASÍ, LO ENVIA A /REFUSED
-      registeredPlayer ? Router.go("/waitingroom") : Router.go("/refused");
+      // REVISA QUE EL USUARIO INGRESE EL NOMBRE DE ALGUN USUARIO REGISTRADO, DE NO SER ASÍ, LO ENVIA A /error
+      registeredPlayer ? Router.go("/waitingroom") : Router.go("/error");
     }
   },
 

@@ -4,6 +4,8 @@ import "./pages/enterroom/enterroom";
 import "./pages/waitingroom/waitingroom";
 import "./pages/game/game";
 
+import "./pages/error/error";
+
 import "./router";
 
 import "./components/hands/hands";
