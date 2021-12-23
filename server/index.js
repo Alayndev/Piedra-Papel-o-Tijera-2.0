@@ -176,7 +176,7 @@ app.patch("/gameroomsscore/:roomid", function (req, res) {
         });
     });
 });
-// PREGUNTAR EN DISCORD SI NO DEBERÍA SER GET (ya que obtenemos el id del doc) Y RECIBIR EL userName/email por query string o params, ya que GET no recibe body 
+// PREGUNTAR EN DISCORD SI NO DEBERÍA SER GET (ya que obtenemos el id del doc) Y RECIBIR EL userName/email por query string o params, ya que GET no recibe body
 // AUTHENTICATION: RECIBE EL userName DEL USUARIO Y DEVUELVE SU USER ID  (id del Doc de la Coll Users de Firestore)
 app.post("/auth", function (req, res) {
     var userName = req.body.userName;
@@ -196,6 +196,16 @@ app.post("/auth", function (req, res) {
         }
     });
 });
+// DEFINE QUE EL JUGADOR ESTA LISTO PARA INICIAR, ACTUALIZA LA DATA EN RTDB CAMBIARNDO start: true
+app.patch("/gamestart/:rtdbRoomId", function (req, res) {
+    var player = req.query.player;
+    var rtdbRoomId = req.params.rtdbRoomId;
+    var body = req.body; // Spread con todo lo que había, sólo cambiamos start: true
+    var playerRef = database_1.realtimeDB.ref("/gamerooms/" + rtdbRoomId + "/currentgame/" + player);
+    return playerRef.update(body, function () {
+        res.status(201).json({ message: player + " listo para jugar" });
+    });
+});
 app.use(express.static("dist"));
 app.get("*", function (req, res) {
     res.sendFile("".concat(dist));
@@ -206,6 +216,6 @@ app.listen(port, function () {
 // ADAPTAR CON CAP. 5 TEORIA -- OK
 // Repasar métodos Firestore y Rtdb con docs -- OK --> https://firebase.google.com/docs/reference/js/v8/firebase.database.Reference
 // Revisar y probar en Postman -- OK
-// Crear método para consumir este endpoint en state --
-// Consumirlo desde la page --
+// Crear método para consumir este endpoint en state -- OK
+// Consumirlo desde la page -- OK
 // Deploy

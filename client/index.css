@@ -12,6 +12,7 @@ body {
   max-width: 400px;
   margin: 0 auto;
   width: 75%;
+  height: 100vh;
 }
 
 @media (min-height: 639px) {

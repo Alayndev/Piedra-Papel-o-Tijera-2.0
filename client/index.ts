@@ -2,6 +2,7 @@ import "./pages/home/home";
 import "./pages/newroom/newroom";
 import "./pages/enterroom/enterroom";
 import "./pages/waitingroom/waitingroom";
+import "./pages/game/game";
 
 import "./router";
 

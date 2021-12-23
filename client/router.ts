@@ -6,4 +6,5 @@ router.setRoutes([
   { path: "/newroom", component: "x-newroom-page" },
   { path: "/enterroom", component: "x-enter-room-page" },
   { path: "/waitingroom", component: "x-waiting-page" },
+  { path: "/game", component: "x-game-page" },
 ]);

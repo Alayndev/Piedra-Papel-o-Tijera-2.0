@@ -3,7 +3,9 @@ import { rtdb } from "./rtbd";
 const API_URL =
   process.env.NODE_ENV === "production"
     ? "https://dwf-m6-r-p-s-v2.herokuapp.com"
-    : "http://localhost:3000"; // Esto hay que arreglarlo con un ternario o env var
+    : "http://localhost:3000";
+
+//const API_URL = "http://localhost:3000";
 
 import map from "lodash/map";
 
@@ -370,6 +372,28 @@ const state = {
     const cs = this.getState();
     cs.roomId = gameRoomId;
     this.setState(cs);
+  },
+
+  // DEFINE QUE EL JUGADOR ESTA LISTO PARA JUGAR, ACTUALIZA LA DATA EN RTDB CAMBIARNDO start: true
+  letStartPlayer(player: string) {
+    const cs = this.getState();
+    const currentGameData = cs.currentGame[`${player}`];
+
+    console.log("Player: ", player);
+
+    const connectedUserData = {
+      ...currentGameData,
+      start: true,
+    };
+
+    return fetch(
+      API_URL + "/gamestart/" + cs.rtdbRoomId + "?player=" + player,
+      {
+        headers: { "content-type": "application/json" },
+        method: "PATCH",
+        body: JSON.stringify(connectedUserData),
+      }
+    );
   },
 };
 

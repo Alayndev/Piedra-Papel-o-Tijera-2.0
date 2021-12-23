@@ -61,7 +61,20 @@ class NewRoomPage extends HTMLElement {
           overflow: initial;
         }
       }
+
+      .start-button {
+        width: 100%;
+        height: 87px;
+        padding: 10px;
       
+        font-family: inherit;
+        font-size: 45px;
+      
+        color: white;
+        background-color: #006cfc;
+        border: solid 10px #09428d;
+        border-radius: 10px;         
+      }
     `;
 
     this.shadow.appendChild(pageStyles);
@@ -139,7 +152,7 @@ class NewRoomPage extends HTMLElement {
 
         <br />
 
-        <button-comp class="start-button"> Empezar </button-comp>
+        <button class="start-button"> Empezar </button>
       </form>
 
       <div class="hands-container">  

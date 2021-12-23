@@ -179,7 +179,7 @@ class EnterRoomPage extends HTMLElement {
     const divEl = document.createElement("div");
 
     divEl.innerHTML = `
-      <h1 class="home__title" > Piedra Papel ó Tijera QUE PASAAAAAAAAAAA</h1>
+      <h1 class="home__title" > Piedra Papel ó Tijera</h1>
         
       
       <form class="form" >

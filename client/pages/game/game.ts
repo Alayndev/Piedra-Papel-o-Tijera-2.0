@@ -15,6 +15,10 @@ class GamePage extends HTMLElement {
   render() {
     const divEl = document.createElement("div");
 
+    divEl.innerHTML = `
+      <h1> Holis soy la page /game </h1>
+    `;
+
     this.shadow.appendChild(divEl);
 
     this.addListeners();
