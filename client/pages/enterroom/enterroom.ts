@@ -195,9 +195,9 @@ class EnterRoomPage extends HTMLElement {
       
 
       <div class="hands-container">  
-        <hand-comp handType="scissors"></hand-comp>
-        <hand-comp handType="rock"></hand-comp>
-        <hand-comp handType="paper"></hand-comp>
+        <hand-comp handType="tijeras"></hand-comp>
+        <hand-comp handType="piedra"></hand-comp>
+        <hand-comp handType="papel"></hand-comp>
       </div>
 
     `;

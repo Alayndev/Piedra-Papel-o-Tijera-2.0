@@ -6,10 +6,15 @@ import "./pages/game/game";
 
 import "./pages/error/error";
 
+import "./pages/win/win";
+import "./pages/lose/lose";
+import "./pages/draw/draw";
+
 import "./router";
 
 import "./components/hands/hands";
 import "./components/button/button";
+import "./components/ring/index";
 
 import { state } from "./state";
 

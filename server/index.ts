@@ -184,7 +184,6 @@ app.patch("/gamedata/:gameroomId", function (req, res) {
   });
 });
 
-// CREO QUE SERÍA PATCH
 // OBJETIVO: AGREGAR EL SCORE Y EL NOMBRE INICIAL DEL PLAYER 2 A FIRESTORE
 app.patch("/gameroomsscore/:roomid", (req, res) => {
   const gameRoomId = req.params.roomid;
@@ -221,8 +220,7 @@ app.post("/auth", (req, res) => {
     .then((querySnapshot) => {
       if (querySnapshot.empty) {
         res.status(404).json({
-          message:
-            "El nombre que ingresaste no corresponde a un usuario registrado.",
+          message: "This user does not exist.",
         });
       } else {
         res.status(200).json({
@@ -238,13 +236,74 @@ app.patch("/gamestart/:rtdbRoomId", function (req, res) {
   const { rtdbRoomId } = req.params;
   const body = req.body; // Spread con todo lo que había, sólo cambiamos start: true
 
-
   const playerRef = realtimeDB.ref(
     "/gamerooms/" + rtdbRoomId + "/currentgame/" + player
   );
 
   return playerRef.update(body, () => {
     res.status(201).json({ message: player + "is ready to play" });
+  });
+});
+
+// TODO OK
+// RESETEA LA JUGADA Y ENVIA A LOS JUGADORES AL GAMEROOM
+app.patch("/restartplayer/:rtdbRoomId", function (req, res) {
+  const { player } = req.query;
+  const { rtdbRoomId } = req.params;
+  const body = req.body;
+
+  const playerRef = realtimeDB.ref(
+    "/gamerooms/" + rtdbRoomId + "/currentgame/" + player
+  );
+
+  return playerRef.update(body, () => {
+    res.status(201).json({ message: player + " disconnected" });
+  });
+});
+
+
+// TODO OK
+// DEFINE QUE EL JUGADOR ESTA LISTO PARA INICIAR
+app.patch("/handchoice/:rtdbRoomId", function (req, res) {
+  const { player } = req.query;
+  const { rtdbRoomId } = req.params;
+  const body = req.body;
+
+  const playerRef = realtimeDB.ref(
+    "/gamerooms/" + rtdbRoomId + "/currentgame/" + player
+  );
+
+  return playerRef.update(body, () => {
+    res.status(201).json({ message: player + " played" });
+  });
+});
+
+// MOVER A LINEA 211 debajo de PATCH /gameroomsscore/:roomid
+
+// PASOS BACK CON ESTE ENDPOINT. LUEGO PROBAR EN FRONT LOS 3 ENDPOINTS DE LINEA 318, CONSOLEAR TODO Y PROBAR SI TODO FUNCIONA
+// OBJETIVO: AGREGA UN PUNTO AL SCORE DE FIRESTORE, PIDIENDO PARAMETRO EL ROOMID Y EL NOMBRE DEL USUARIO Y SU POSICIÓN EN EL JUEGO COMO REFERENCIA
+app.patch("/gameroomscore/:roomId", (req, res) => {
+  const { roomId } = req.params;
+  const { playerRef } = req.body;
+  const { playerName } = req.body;
+
+  const gameroomsDocRef = gameroomsCollRef.doc(roomId.toString());
+
+  gameroomsDocRef.get().then((snap) => {
+    const actualData = snap.data();
+
+    const newscore = actualData.score[playerRef].score + 1;
+
+    actualData.score[playerRef] = {
+      name: playerName,
+      score: newscore,
+    };
+
+    gameroomsDocRef.update(actualData).then(() => {
+      res.json({
+        message: "score updated, Firestore gameroom " + roomId,
+      });
+    });
   });
 });
 
@@ -258,9 +317,10 @@ app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
 
+
 // ADAPTAR CON CAP. 5 TEORIA -- OK
 // Repasar métodos Firestore y Rtdb con docs -- OK --> https://firebase.google.com/docs/reference/js/v8/firebase.database.Reference
 // Revisar y probar en Postman -- OK
 // Crear método para consumir este endpoint en state -- OK
 // Consumirlo desde la page -- OK
-// Deploy
+// Deploy -- OK

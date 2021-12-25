@@ -1,15 +1,17 @@
 const handImages = {
-  paper: require("url:../../images/paper-hand.png"),
-  rock: require("url:../../images/rock-hand.png"),
-  scissors: require("url:../../images/scissors-hand.png"),
+  papel: require("url:../../images/paper-hand.png"),
+  piedra: require("url:../../images/rock-hand.png"),
+  tijeras: require("url:../../images/scissors-hand.png"),
 };
 
 class HandComp extends HTMLElement {
   shadow: ShadowRoot;
+  handType: string;
 
   constructor() {
     super();
     this.shadow = this.attachShadow({ mode: "open" });
+    this.handType = this.getAttribute("handType");
   }
 
   connectedCallback() {
@@ -22,7 +24,7 @@ class HandComp extends HTMLElement {
     handImg.addEventListener("click", () => {
       const handCustomEvent = new CustomEvent("handClick", {
         detail: {
-          handMove: this.getAttribute("handType"), // Dato que expongo al exterior, un string que es el tipo de dato, consolear donde use este customEvent hand-comp
+          handMove: this.handType, // Dato que expongo al exterior, un string que es el tipo de dato, consolear donde use este customEvent hand-comp
         },
       });
 
@@ -31,7 +33,7 @@ class HandComp extends HTMLElement {
   }
 
   render() {
-    const handType = this.getAttribute("handType") || "paper";
+    const handType = this.getAttribute("handType");
 
     const handHeight = this.getAttribute("handHeight") || "180px";
     const handWidth = this.getAttribute("handWidth") || "70px";
