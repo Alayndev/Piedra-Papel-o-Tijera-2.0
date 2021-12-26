@@ -79,7 +79,6 @@ class WaitingPage extends HTMLElement {
     this.shadow.appendChild(pageStyles);
   }
 
-  // FALTA ESTO
   addListeners() {
     const startButton = this.shadow.querySelector(".start-button");
     const cg = this.currentGame;

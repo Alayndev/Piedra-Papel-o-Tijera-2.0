@@ -15,6 +15,7 @@ import "./router";
 import "./components/hands/hands";
 import "./components/button/button";
 import "./components/ring/index";
+import "./components/loader/loader";
 
 import { state } from "./state";
 

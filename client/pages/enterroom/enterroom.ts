@@ -75,17 +75,25 @@ class EnterRoomPage extends HTMLElement {
         border-radius: 10px;          
       }
       
+      .loader-container {
+        display: none;
+      }
     `;
 
     this.shadow.appendChild(pageStyles);
   }
-
 
   // OBJETIVO: 1) SI EL USUARIUO NO ESTÁ LOGEADO, LOGEARLO CON POST /singup - 2) SI ESTÁ LOGEADO, DEBE INGRESAR EL USERNAME CORRECTO PARA LA GAMEROOM QUE INDIQUE, SINO IRÁ A /refused
   addListeners() {
     const formEl = this.shadow.querySelector(".form");
     formEl.addEventListener("submit", (e: any) => {
       e.preventDefault();
+
+      const loaderCont = this.shadow.querySelector(".loader-container");
+      loaderCont.setAttribute("style", "display: initial");
+      loaderCont.innerHTML = `
+        <loader-comp></loader-comp>
+      `;
 
       const target = e.target as any;
 
@@ -181,10 +189,11 @@ class EnterRoomPage extends HTMLElement {
     divEl.innerHTML = `
       <h1 class="home__title" > Piedra Papel ó Tijera</h1>
         
+      <span class="loader-container"></span>
       
       <form class="form" >
 
-        <input class="input-user-name" name="username" placeholder="tu nombre" required></input>
+        <input class="input-user-name" name="username" placeholder="tu nombre" maxlength="15" required></input>
 
         <input class="input-user-name" name="roomcode" placeholder="codigo" required></input>
 

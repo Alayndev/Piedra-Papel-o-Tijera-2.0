@@ -126,9 +126,6 @@ app.get("/gamerooms/:roomId", (req, res) => {
   const { userId } = req.query;
   const { roomId } = req.params;
 
-  console.log(userId); // Doc de la Coll Users
-  console.log(roomId); // Doc de la Coll Gamerooms
-
   const userDocRef = usersCollRef.doc(userId.toString());
 
   // Si el Doc/userId existe en la Coll Users, busco en la Coll Gamerooms el Doc/roomId (corto) para devolver el ID largo RTDB que este Doc guarda
@@ -279,8 +276,6 @@ app.patch("/handchoice/:rtdbRoomId", function (req, res) {
 });
 
 // MOVER A LINEA 211 debajo de PATCH /gameroomsscore/:roomid
-
-// PASOS BACK CON ESTE ENDPOINT. LUEGO PROBAR EN FRONT LOS 3 ENDPOINTS DE LINEA 318, CONSOLEAR TODO Y PROBAR SI TODO FUNCIONA
 // OBJETIVO: AGREGA UN PUNTO AL SCORE DE FIRESTORE, PIDIENDO PARAMETRO EL ROOMID Y EL NOMBRE DEL USUARIO Y SU POSICIÓN EN EL JUEGO COMO REFERENCIA
 app.patch("/gameroomscore/:roomId", (req, res) => {
   const { roomId } = req.params;

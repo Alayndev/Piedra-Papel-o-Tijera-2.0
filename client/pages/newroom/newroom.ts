@@ -75,6 +75,10 @@ class NewRoomPage extends HTMLElement {
         border: solid 10px #09428d;
         border-radius: 10px;         
       }
+
+      .loader-container {
+        display: none;
+      }
     `;
 
     this.shadow.appendChild(pageStyles);
@@ -84,6 +88,12 @@ class NewRoomPage extends HTMLElement {
     const formEl = this.shadow.querySelector(".form");
     formEl.addEventListener("submit", (e: any) => {
       e.preventDefault();
+
+      const loaderCont = this.shadow.querySelector(".loader-container");
+      loaderCont.setAttribute("style", "display: initial");
+      loaderCont.innerHTML = `
+        <loader-comp></loader-comp>
+      `;
 
       const target = e.target as any;
 
@@ -144,10 +154,11 @@ class NewRoomPage extends HTMLElement {
     newRoomEl.innerHTML = `
       <h1 class="home__title" > Piedra Papel ó Tijera </h1>
       
+      <span class="loader-container"></span>
     
       <form class="form" >
         <label class="label-user-name" > User Name: <br />
-          <input class="input-user-name" type="text" name="username" required />
+          <input class="input-user-name" type="text" name="username" maxlength="15" required />
         </label>
 
         <br />
