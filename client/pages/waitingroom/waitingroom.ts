@@ -2,6 +2,8 @@ import { state } from "../../state";
 
 import { Router } from "@vaadin/router";
 
+import "./styles.css";
+
 class WaitingPage extends HTMLElement {
   shadow: ShadowRoot;
   stateData: any;
@@ -11,72 +13,6 @@ class WaitingPage extends HTMLElement {
   constructor() {
     super();
     this.shadow = this.attachShadow({ mode: "open" });
-
-    let pageStyles = document.createElement("style");
-    pageStyles.textContent = `
-      .main-container {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        padding-top: 15px;
-      }
-      
-      .share-code {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        font-size: 35px;
-        margin: 0;
-        flex-grow: 1;
-      }
-
-      .hands-container {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-grow: 1;
-      }
-
-      @media (min-height: 639px) {
-        .hands-container {
-          overflow: initial;
-        }
-      }
-
-      .second-player {
-        color: #FF6442;
-      }
-      
-      .room-id {
-        text-align: end;
-      }
-
-      .start-container{ 
-        display: none;
-        align-self: center;
-        flex-direction: column;
-        align-items: center;
-        gap: 30px;
-      }  
-
-      .start-button {
-        width: 100%;
-        height: 87px;
-        padding: 10px;
-      
-        font-family: inherit;
-        font-size: 45px;
-      
-        color: white;
-        background-color: #006cfc;
-        border: solid 10px #09428d;
-        border-radius: 10px;         
-      }
-    `;
-
-    this.shadow.appendChild(pageStyles);
   }
 
   addListeners() {

@@ -8,7 +8,6 @@ class GamePage extends HTMLElement {
   stateData: any;
   currentGame: any;
 
-  // VER DE COPIAR ESTILOS dwf-m5
   constructor() {
     super();
     this.shadow = this.attachShadow({ mode: "open" });
@@ -44,13 +43,11 @@ class GamePage extends HTMLElement {
     this.shadow.appendChild(style);
   }
 
-  // FALTA ESTO DSP. DE RENDER - YA ESTA EL ENDPOINT HECHO Y FUNCIONA EN POSTMAN, FALTA PROBARLO DESDE EL STATE Y PAGE (ver pasos en Back)
   addListeners() {
     const playerCont = this.shadow.querySelector(".hands-container");
     const handsArray = playerCont.children;
 
     for (const hand of handsArray) {
-      // handType es undefined, ver como consumir este Custom Event en dwf-m5
       hand.addEventListener("handClick", (e: any) => {
         let handType = e.detail.handMove;
 
@@ -76,8 +73,6 @@ class GamePage extends HTMLElement {
     this.render();
   }
 
-  // VAMOS ACÁ
-  // VER PARA QUE SON TODAS ESOS FUNCIONES/COMPS., QUIZA PARA EL CONTADOR PUEDO USAR dwf-m5 Y YA. Y PARA EL MOVIMIENTO DE LA MANO LO MISMO
   render() {
     const mainPage = document.createElement("main");
     mainPage.classList.add("welcome-container");
