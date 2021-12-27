@@ -16,16 +16,12 @@ class NewRoomPage extends HTMLElement {
         padding-top: 15px;
       }
       
-      .home__title {
-        font-size: 80px;
-        font-weight: 700;
-        color: #009048;
-        text-align: center;
-        margin: 50px 0;
-      }
 
       .form {
         max-width: 450px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
       }
 
       .label-user-name {
@@ -57,7 +53,7 @@ class NewRoomPage extends HTMLElement {
 
       @media (min-height: 639px) {
         .hands-container {
-          margin-top: 50%;
+          margin-top: 70%;
           overflow: initial;
         }
       }
@@ -152,16 +148,14 @@ class NewRoomPage extends HTMLElement {
     const newRoomEl = document.createElement("div");
 
     newRoomEl.innerHTML = `
-      <h1 class="home__title" > Piedra Papel ó Tijera </h1>
-      
+      <main-title-comp></main-title-comp>
+ 
       <span class="loader-container"></span>
     
       <form class="form" >
         <label class="label-user-name" > User Name: <br />
           <input class="input-user-name" type="text" name="username" maxlength="15" required />
         </label>
-
-        <br />
 
         <button class="start-button"> Empezar </button>
       </form>

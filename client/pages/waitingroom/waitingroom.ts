@@ -2,8 +2,6 @@ import { state } from "../../state";
 
 import { Router } from "@vaadin/router";
 
-import "./styles.css";
-
 class WaitingPage extends HTMLElement {
   shadow: ShadowRoot;
   stateData: any;
@@ -13,6 +11,102 @@ class WaitingPage extends HTMLElement {
   constructor() {
     super();
     this.shadow = this.attachShadow({ mode: "open" });
+
+    let pageStyles = document.createElement("style");
+    pageStyles.textContent = `
+      .main-container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding-top: 15px;
+      }
+
+      .score-header {
+        display: flex;
+        justify-content: space-around;
+      }
+      
+      .share-code {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 35px;
+        margin: 0;
+        flex-grow: 1;
+        gap: 10px;
+      }
+
+      .hands-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+      }
+
+      @media (min-height: 639px) {
+        .hands-container {
+          overflow: initial;
+          margin-bottom: 25%;
+        }
+      }
+
+      @media (min-height: 735px) {
+        .hands-container {
+          overflow: initial;
+          margin-bottom: 55%;
+        }
+      }
+
+
+      .second-player {
+        color: #FF6442;
+      }
+      
+      .room-id {
+        text-align: end;
+      }
+
+      .code-to-share {
+        font-weight: bold;
+        color: #09428d;
+        font-size: 61px;
+      }
+
+      .start-container{ 
+        display: none;
+        align-self: center;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+      }  
+
+      .rules {
+        font-size: 45px;
+        text-align: center;
+      }
+
+      .start-button {
+        width: 100%;
+        height: 87px;
+        padding: 10px;
+      
+        font-family: inherit;
+        font-size: 45px;
+      
+        color: white;
+        background-color: #006cfc;
+        border: solid 10px #09428d;
+        border-radius: 10px;         
+      }
+
+      .waiting-rival {
+        font-size: 35px;
+        text-align: center;
+      }
+    `;
+
+    this.shadow.appendChild(pageStyles);
   }
 
   addListeners() {
@@ -54,7 +148,7 @@ class WaitingPage extends HTMLElement {
         const startContainer = this.shadow.querySelector(".start-container");
 
         startContainer.innerHTML = `
-      <p> Esperando que ${hasPlayersNotStarted["playerName"]} presione ¡Jugar!... </p>
+      <p class="waiting-rival"> Esperando que <span class="second-player"> ${hasPlayersNotStarted["playerName"]} </span> presione ¡Jugar!... </p>
       `;
       }
     }
@@ -83,7 +177,6 @@ class WaitingPage extends HTMLElement {
     this.render();
   }
 
-  // Cambiar tags strong por span y dar estilos
   render() {
     const cs = state.getState();
     const divEl = document.createElement("div");
@@ -91,9 +184,9 @@ class WaitingPage extends HTMLElement {
     divEl.innerHTML = `
 
     <header class="score-header">
-      <div class="players-name">
+      <span class="players-name">
 
-        <span class="score-title">
+        <div class="score-title">
           ${
             this.currentScore.player1.name !== undefined
               ? this.currentScore.player1.name + ":"
@@ -104,9 +197,8 @@ class WaitingPage extends HTMLElement {
               ? this.currentScore.player1.score
               : ""
           }
-        </span>
+        </div>
 
-        <br />
 
         <span class="score-title second-player">
           ${
@@ -121,22 +213,24 @@ class WaitingPage extends HTMLElement {
           }
         </span>
 
-      </div>
+      </span>
 
-      <div class="room-id">
+      <span class="room-id">
         <span class="score-title"> <strong> Sala </strong> </span> <br />
         <span class="score-title"> ${this.stateData.roomId} </span>
-      </div>
+      </span>
     </header>
 
     <p class="share-code">  
-      Compartí el código: <br />  
-      <strong> ${this.stateData.roomId} </strong> <br /> 
+      Compartí el código: 
+
+      <span class="code-to-share"> ${this.stateData.roomId} </span> 
+
       con tu contrincante  
     </p> 
 
     <div class="start-container">
-      <p>Presioná jugar y elegí: piedra, papel o tijera antes de que pasen los 3 segundos.</p>
+      <p class="rules" >Presioná jugar y elegí: piedra, papel o tijera antes de que pasen los 3 segundos.</p>
 
       <button class="start-button"> Jugar! </button>
     </div>

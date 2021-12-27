@@ -16,13 +16,12 @@ class HomePage extends HTMLElement {
         padding-top: 15px;
       }
       
-      .home__title {
-        font-size: 80px;
-        font-weight: 700;
-        color: #009048;
-        text-align: center;
-        margin: 50px 0;
-      }
+     .buttons-container {
+        max-width: 450px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+     }
       
       .hands-container {
         height: 100%;
@@ -66,13 +65,15 @@ class HomePage extends HTMLElement {
     divEl.classList.add("main-container");
 
     divEl.innerHTML = `
-      <h1 class="home__title" > Piedra Papel ó Tijera </h1>
+      <main-title-comp></main-title-comp>
       
-      <button-comp class="newgame-button"> Nuevo Juego </button-comp>
 
-      <br />
+      <div class="buttons-container">
+        <button-comp class="newgame-button"> Nuevo Juego </button-comp>
 
-      <button-comp class="enter-room-button"> Ingresar a una sala </button-comp>
+        <button-comp class="enter-room-button"> Ingresar a una sala </button-comp>
+      </div>
+      
   
 
       <div class="hands-container">  

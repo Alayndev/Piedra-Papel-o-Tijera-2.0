@@ -15,16 +15,11 @@ class EnterRoomPage extends HTMLElement {
         padding-top: 15px;
       }
       
-      .home__title {
-        font-size: 80px;
-        font-weight: 700;
-        color: #009048;
-        text-align: center;
-        margin: 50px 0;
-      }
-
       .form {
         max-width: 450px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
       }
 
       .label-user-name {
@@ -56,7 +51,7 @@ class EnterRoomPage extends HTMLElement {
 
       @media (min-height: 639px) {
         .hands-container {
-          margin-top: 50%;
+          margin-top: 70%;
           overflow: initial;
         }
       }
@@ -187,7 +182,7 @@ class EnterRoomPage extends HTMLElement {
     const divEl = document.createElement("div");
 
     divEl.innerHTML = `
-      <h1 class="home__title" > Piedra Papel ó Tijera</h1>
+      <main-title-comp></main-title-comp>
         
       <span class="loader-container"></span>
       
@@ -197,7 +192,7 @@ class EnterRoomPage extends HTMLElement {
 
         <input class="input-user-name" name="roomcode" placeholder="codigo" required></input>
 
-        <button class="submit-button"> Empezaremos </button>
+        <button class="submit-button"> Ingresar a la sala </button>
     
       </form>
 
