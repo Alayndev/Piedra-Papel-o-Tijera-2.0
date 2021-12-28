@@ -24,6 +24,15 @@ class GamePage extends HTMLElement {
     .progress-ring {
       margin-top: 60px;
     }
+    
+    .no-choice-container {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
 
     .waitingroom-button {
       width: 100%;
@@ -37,6 +46,51 @@ class GamePage extends HTMLElement {
       background-color: #006cfc;
       border: solid 10px #09428d;
       border-radius: 10px;         
+    }
+
+
+    .no-choice {
+      font-size: 25px;
+      text-align: center;
+      margin: 0;
+    }
+
+    .player-dont-chose {
+      color: #FF6442;
+    }
+
+
+    .circle-container {
+      margin: 95px auto;
+    }
+    
+    .circle {
+      width: 250px;
+      height: 250px;
+      border: solid 25px black;
+      border-radius: 50%;
+      border-left-color: rgba(0, 0, 0, 0.3);
+      border-bottom-color: rgba(0, 0, 0, 0.3);
+      border-top-color: rgba(0, 0, 0, 0.3);
+      animation: spin 1s linear infinite;
+    
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
+    .countdown-counter {
+      font-size: 100px;
     }
 
     `;
@@ -78,16 +132,14 @@ class GamePage extends HTMLElement {
     mainPage.classList.add("welcome-container");
 
     let counter = 3;
-    let progress = 0;
 
-    function counterInit() {
-      const ring = mainPage.children[0];
-      const ringText = ring.shadowRoot.children[0].children[0].children[0];
-      counter--,
-        (progress += 33.3),
-        (ringText.textContent = `${counter}`),
-        ring.setAttribute("progress", `${progress}`);
-    }
+    const counterInit = () => {
+      counter--;
+
+      const countdownEl = this.shadow.querySelector(".countdown-counter");
+
+      countdownEl.textContent = counter as any;
+    };
 
     let timeout;
 
@@ -107,10 +159,11 @@ class GamePage extends HTMLElement {
           if (playersDontChoice) {
             const playerDontChoiceName = playersDontChoice["playerName"];
 
-            mainPage.style.justifyContent = "center";
             mainPage.innerHTML = `
-            <p>Lo siento, pero el jugador ${playerDontChoiceName} no ha elegido ninguna mano.</p>
-            <button class="waitingroom-button">Volver a la sala</button>
+            <span class="no-choice-container">
+              <p class="no-choice"> Lo siento, pero el jugador <span class="player-dont-chose" > ${playerDontChoiceName} </span> no ha elegido ninguna mano.</p>
+              <button class="waitingroom-button"> Volver a la sala </button>
+            </span>
             `;
 
             const newGameButton = mainPage.querySelector(".waitingroom-button");
@@ -211,11 +264,16 @@ class GamePage extends HTMLElement {
         }
 
         definePlay(mainPage);
-      }, 3999);
+      }, 2999);
     }
 
     mainPage.innerHTML = `
-     <progress-ring stroke="20" radius="150" progress="0" contador="3"></progress-ring>
+      <div class="circle-container">
+        <div class="circle">
+          <h3 class="countdown-counter">3</h3>
+        </div>
+      </div>
+
    
       <div class="hands-container">  
         <hand-comp handType="tijeras"></hand-comp>
