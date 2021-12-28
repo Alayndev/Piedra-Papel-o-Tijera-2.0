@@ -86,7 +86,19 @@ app.post("/gamerooms", (req, res) => {
 
           const randomNumber = 1000 + Math.floor(Math.random() * 999);
 
-          const roomId = "JM" + randomNumber.toString();
+          const makeid = (length) => {
+            let result = "";
+            let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let charactersLength = characters.length;
+            for (let i = 0; i < length; i++) {
+              result += characters.charAt(
+                Math.floor(Math.random() * charactersLength)
+              );
+            }
+            return result;
+          };
+
+          const roomId = makeid(2) + randomNumber.toString();
 
           const gameroomDocRef = gameroomsCollRef.doc(roomId.toString());
 
@@ -258,7 +270,6 @@ app.patch("/restartplayer/:rtdbRoomId", function (req, res) {
   });
 });
 
-
 // TODO OK
 // DEFINE QUE EL JUGADOR ESTA LISTO PARA INICIAR
 app.patch("/handchoice/:rtdbRoomId", function (req, res) {
@@ -311,7 +322,6 @@ app.get("*", (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
-
 
 // ADAPTAR CON CAP. 5 TEORIA -- OK
 // Repasar métodos Firestore y Rtdb con docs -- OK --> https://firebase.google.com/docs/reference/js/v8/firebase.database.Reference
