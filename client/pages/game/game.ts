@@ -93,6 +93,21 @@ class GamePage extends HTMLElement {
       font-size: 100px;
     }
 
+    .hands-container {
+      height: 100%;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+
+    @media (min-height: 639px) {
+      .hands-container {
+        margin-top: 70%;
+        overflow: initial;
+      }
+    }
+
     `;
     this.shadow.appendChild(style);
   }
@@ -105,7 +120,13 @@ class GamePage extends HTMLElement {
       hand.addEventListener("handClick", (e: any) => {
         let handType = e.detail.handMove;
 
-        console.log(e.detail);
+        if (hand.getAttribute("handType") !== handType) {
+          hand.classList.add("inactive-hand");
+          hand.classList.remove("active-hand");
+        } else if (hand.getAttribute("handType") === handType) {
+          hand.classList.add("active-hand");
+          hand.classList.remove("inactive-hand");
+        }
 
         const actualPlayerRef = state.getSessionUserRef()[0];
 
@@ -195,6 +216,7 @@ class GamePage extends HTMLElement {
 
             const handPlayerEl = mainPage.getElementsByTagName("hand-comp");
 
+            // ACA DEBERIA PONER INACTIVE Y ACTIVE CLASSES
             handPlayerEl[1].shadowRoot.children[0].innerHTML = `
                .hand{
               height: 240px;
@@ -264,7 +286,7 @@ class GamePage extends HTMLElement {
         }
 
         definePlay(mainPage);
-      }, 2999);
+      }, 22999);
     }
 
     mainPage.innerHTML = `

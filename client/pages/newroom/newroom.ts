@@ -75,6 +75,16 @@ class NewRoomPage extends HTMLElement {
       .loader-container {
         display: none;
       }
+      
+      .api-message-container {
+        display: none;
+      }
+
+      .api-message {
+        color: #FF6442;
+        text-align: center;
+        font-size: 20px;
+      }
     `;
 
     this.shadow.appendChild(pageStyles);
@@ -94,7 +104,6 @@ class NewRoomPage extends HTMLElement {
       const target = e.target as any;
 
       const userName = target.username.value;
-      console.log(userName);
 
       state.setUserName(userName);
 
@@ -108,10 +117,15 @@ class NewRoomPage extends HTMLElement {
 
       newUserPromise.then((res) => {
         if (res.message) {
-          alert(res.message);
-        }
-
-        if (res.userId) {
+          const apiMessageCont = this.shadow.querySelector(
+            ".api-message-container"
+          );
+          apiMessageCont.setAttribute("style", "display: initial");
+          apiMessageCont.innerHTML = `
+            <p class="api-message"> ${res.message} </p>
+          `;
+          loaderCont.setAttribute("style", "display: none");
+        } else if (res.userId) {
           const newGameRoomData = {
             userId: res.userId,
             userName: userName,
@@ -151,6 +165,8 @@ class NewRoomPage extends HTMLElement {
       <main-title-comp></main-title-comp>
  
       <span class="loader-container"></span>
+
+      <span class="api-message-container"></span>
     
       <form class="form" >
         <label class="label-user-name" > User Name: <br />

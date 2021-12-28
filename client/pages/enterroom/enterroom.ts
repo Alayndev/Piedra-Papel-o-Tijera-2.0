@@ -73,6 +73,17 @@ class EnterRoomPage extends HTMLElement {
       .loader-container {
         display: none;
       }
+
+            
+      .api-message-container {
+        display: none;
+      }
+
+      .api-message {
+        color: #FF6442;
+        text-align: center;
+        font-size: 20px;
+      }
     `;
 
     this.shadow.appendChild(pageStyles);
@@ -92,7 +103,7 @@ class EnterRoomPage extends HTMLElement {
 
       const target = e.target as any;
 
-      const roomCode = target.roomcode.value; // CAMBIAR A roomId QUE ES COMO ESTA EN EL STATE
+      const roomCode = target.roomcode.value;
       const userName = target.username.value;
 
       if (roomCode.trim() !== "" && userName.trim() !== "") {
@@ -124,10 +135,15 @@ class EnterRoomPage extends HTMLElement {
 
                 getGameRoomPromise.then((res) => {
                   if (res.message) {
-                    alert(res.message);
-                  }
-
-                  if (res.rtdbRoomId) {
+                    const apiMessageCont = this.shadow.querySelector(
+                      ".api-message-container"
+                    );
+                    apiMessageCont.setAttribute("style", "display: initial");
+                    apiMessageCont.innerHTML = `
+                      <p class="api-message"> ${res.message} </p>
+                    `;
+                    loaderCont.setAttribute("style", "display: none");
+                  } else if (res.rtdbRoomId) {
                     state.connectRTDBGamerooms();
 
                     const conectionListener = setInterval(() => {
@@ -152,10 +168,15 @@ class EnterRoomPage extends HTMLElement {
 
             getGameRoomPromise.then((res) => {
               if (res.message) {
-                alert(res.message);
-              }
-
-              if (res.rtdbRoomId) {
+                const apiMessageCont = this.shadow.querySelector(
+                  ".api-message-container"
+                );
+                apiMessageCont.setAttribute("style", "display: initial");
+                apiMessageCont.innerHTML = `
+                  <p class="api-message"> ${res.message} </p>
+                `;
+                loaderCont.setAttribute("style", "display: none");
+              } else if (res.rtdbRoomId) {
                 state.connectRTDBGamerooms();
 
                 console.log("HAY rtdbRoomId");
@@ -185,6 +206,8 @@ class EnterRoomPage extends HTMLElement {
       <main-title-comp></main-title-comp>
         
       <span class="loader-container"></span>
+
+      <span class="api-message-container"></span>
       
       <form class="form" >
 

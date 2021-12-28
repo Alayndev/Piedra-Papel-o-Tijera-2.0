@@ -18,7 +18,7 @@ body {
 
 @media (min-height: 639px) {
   #root {
-    height: 1000px;
+    height: 120vh;
   }
 }
 
