@@ -2,9 +2,13 @@ import { state } from "../../state";
 
 import { Router } from "@vaadin/router";
 
-const winStarIMG = require("url:../../images/win.svg");
+const resultsImages = {
+  victoria: require("url:../../images/win.svg"),
+  derrota: require("url:../../images/lose.svg"),
+  empate: require("url:../../images/tiedGame.svg"),
+};
 
-class WinPage extends HTMLElement {
+class ResultPage extends HTMLElement {
   shadow: ShadowRoot;
   currentScore: any;
 
@@ -28,15 +32,12 @@ class WinPage extends HTMLElement {
         background-color: rgba(136, 137, 73, 0.9);
       }
 
-      .win-star {
+      .result__img {
         height: 362px;
-        width: 361px;
+        margin: 0;
         background: no-repeat;
       }
 
-      .win-star {
-        background-image: url(${winStarIMG});
-      }
 
       .score-table {
         padding: 5px 30px;
@@ -102,8 +103,12 @@ class WinPage extends HTMLElement {
     const divEl = document.createElement("div");
     divEl.classList.add("main-container");
 
+    const cs = state.getState();
+    const gameResult = cs.result;
+    console.log(gameResult, "gameResult");
+
     divEl.innerHTML = `
-      <span class="win-star"></span>
+      <img src=${resultsImages[gameResult]} class="result__img" />
 
       <div class="score-table">
         <h3> Score </h3>
@@ -118,7 +123,6 @@ class WinPage extends HTMLElement {
 
     this.addListeners();
 
-    // SI EL USUARIO CIERRA LA PAGINA, SE REINICIA SU START DE LA RTBD
     window.onbeforeunload = function disconectPlayer() {
       const actualPlayerRef = state.getSessionUserRef()[0];
       state.restartPlayer(actualPlayerRef);
@@ -126,4 +130,4 @@ class WinPage extends HTMLElement {
   }
 }
 
-customElements.define("x-win-page", WinPage);
+customElements.define("x-result-page", ResultPage);

@@ -71,7 +71,16 @@ app.post("/gamerooms", function (req, res) {
                 .then(function () {
                 var roomLongIdRtdb = gameroomRef_1.key;
                 var randomNumber = 1000 + Math.floor(Math.random() * 999);
-                var roomId = "JM" + randomNumber.toString();
+                var makeid = function (length) {
+                    var result = "";
+                    var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    var charactersLength = characters.length;
+                    for (var i = 0; i < length; i++) {
+                        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                    }
+                    return result;
+                };
+                var roomId = makeid(2) + randomNumber.toString();
                 var gameroomDocRef = gameroomsCollRef.doc(roomId.toString());
                 // CREAMOS DOC EN LA COLL GAMEROOMS DE FIRESTORE. GUARDAMOS EL ID DEL GAMEROOM RTDB
                 gameroomDocRef

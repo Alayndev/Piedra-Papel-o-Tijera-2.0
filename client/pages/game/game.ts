@@ -261,20 +261,20 @@ class GamePage extends HTMLElement {
 
                 addWinnerScorePromise.then(() => {
                   restartPromise.then(() => {
-                    Router.go("/win");
+                    Router.go("/result");
                   });
                 });
               }
 
               if (finalResult == "derrota") {
                 restartPromise.then(() => {
-                  Router.go("/lose");
+                  Router.go("/result");
                 });
               }
 
               if (finalResult == "empate") {
                 restartPromise.then(() => {
-                  Router.go("/draw");
+                  Router.go("/result");
                 });
               }
             }
@@ -286,7 +286,7 @@ class GamePage extends HTMLElement {
         }
 
         definePlay(mainPage);
-      }, 22999);
+      }, 2999);
     }
 
     mainPage.innerHTML = `

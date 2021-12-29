@@ -25,6 +25,7 @@ const state = {
     rtdbRoomId: null,
     roomScore: null,
     userId: null,
+    result: null,
   },
 
   listeners: [],
@@ -528,9 +529,18 @@ const state = {
     const myMove = currentGame.myPlay;
     const computerMove = currentGame.computerPlay;
 
-    const resulado = state.whoWins(myMove, computerMove);
+    const result = state.whoWins(myMove, computerMove);
 
-    return resulado;
+    this.setResult(result);
+
+    return result;
+  },
+
+  // VER DE DONDE SACAR EL DATO DERROTA O VICTORIA O EMPATE
+  setResult(result) {
+    const cs = this.getState();
+    cs.result = result;
+    this.setState(cs);
   },
 };
 

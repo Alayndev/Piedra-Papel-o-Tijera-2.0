@@ -6,9 +6,7 @@ import "./pages/game/game";
 
 import "./pages/error/error";
 
-import "./pages/win/win";
-import "./pages/lose/lose";
-import "./pages/draw/draw";
+import "./pages/result/result";
 
 import "./router";
 
