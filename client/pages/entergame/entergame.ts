@@ -1,6 +1,6 @@
 import { state } from "../../state";
 
-class EnterRoomPage extends HTMLElement {
+class EnterGamePage extends HTMLElement {
   shadow: ShadowRoot;
 
   constructor() {
@@ -127,7 +127,7 @@ class EnterRoomPage extends HTMLElement {
 
             newUserPromise.then((res) => {
               if (res.userId) {
-                state.setGameRoomId(roomCode);
+                state.setRoomId(roomCode);
 
                 const getGameRoomPromise: any = state.getGameRoomLongId();
 
@@ -147,9 +147,9 @@ class EnterRoomPage extends HTMLElement {
                     state.connectRTDBGamerooms();
 
                     const conectionListener = setInterval(() => {
-                      if (state.currentGameFlag() && state.currentScoreFlag()) {
+                      if (state.bothPlayers() && state.scoreReady()) {
                         clearInterval(conectionListener);
-                        state.redirectPlayers();
+                        state.goTo();
                       }
                     }, 500);
                   }
@@ -160,7 +160,7 @@ class EnterRoomPage extends HTMLElement {
 
           // 2) FUNCIONA - HAY USER - EL USER YA EXISTE
           if (res.userId) {
-            state.setGameRoomId(roomCode);
+            state.setRoomId(roomCode);
 
             const getGameRoomPromise: any = state.getGameRoomLongId();
 
@@ -182,9 +182,9 @@ class EnterRoomPage extends HTMLElement {
                 console.log("HAY rtdbRoomId");
 
                 const conectionListener = setInterval(() => {
-                  if (state.currentGameFlag() && state.currentScoreFlag()) {
+                  if (state.bothPlayers() && state.scoreReady()) {
                     clearInterval(conectionListener);
-                    state.redirectPlayers();
+                    state.goTo();
                   }
                 }, 500);
               }
@@ -235,4 +235,4 @@ class EnterRoomPage extends HTMLElement {
   }
 }
 
-customElements.define("x-enter-room-page", EnterRoomPage);
+customElements.define("x-entergame-page", EnterGamePage);

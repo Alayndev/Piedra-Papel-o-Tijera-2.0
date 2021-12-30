@@ -82,7 +82,7 @@ class ResultPage extends HTMLElement {
   addListeners() {
     const gameroomButton = this.shadow.querySelector(".waitingroom-button");
     gameroomButton.addEventListener("click", () => {
-      Router.go("/waitingroom");
+      Router.go("/waitingpage");
     });
   }
 
@@ -125,7 +125,7 @@ class ResultPage extends HTMLElement {
 
     window.onbeforeunload = function disconectPlayer() {
       const actualPlayerRef = state.getSessionUserRef()[0];
-      state.restartPlayer(actualPlayerRef);
+      state.restartPlayerValues(actualPlayerRef);
     };
   }
 }

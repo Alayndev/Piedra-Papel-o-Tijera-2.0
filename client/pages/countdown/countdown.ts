@@ -1,9 +1,8 @@
-// RENOMBRAR A countdown.ts
 import { state } from "../../state";
 
 import { Router } from "@vaadin/router";
 
-class GamePage extends HTMLElement {
+class CountdownPage extends HTMLElement {
   shadow: ShadowRoot;
   stateData: any;
   currentGame: any;
@@ -130,7 +129,7 @@ class GamePage extends HTMLElement {
 
         const actualPlayerRef = state.getSessionUserRef()[0];
 
-        state.makeHandChoice(actualPlayerRef, handType);
+        state.setPlayerMoveRTDB(actualPlayerRef, handType);
       });
     }
   }
@@ -190,9 +189,9 @@ class GamePage extends HTMLElement {
             const newGameButton = mainPage.querySelector(".waitingroom-button");
             newGameButton.addEventListener("click", () => {
               const actualPlayerRef = state.getSessionUserRef()[0];
-              const restartPromise = state.restartPlayer(actualPlayerRef);
+              const restartPromise = state.restartPlayerValues(actualPlayerRef);
               restartPromise.then(() => {
-                Router.go("/waitingroom");
+                Router.go("/waitingpage");
               });
             });
           }
@@ -236,13 +235,13 @@ class GamePage extends HTMLElement {
               }
               `;
 
-            const finalResult = state.definePlay(playerMove, rivalMove);
+            const gameResult = state.definePlay(playerMove, rivalMove);
 
             function redirect() {
               const actualPlayerRef = state.getSessionUserRef()[0];
-              const restartPromise = state.restartPlayer(actualPlayerRef);
+              const restartPromise = state.restartPlayerValues(actualPlayerRef);
 
-              if (finalResult == "victoria") {
+              if (gameResult == "victoria") {
                 const cs = state.getState();
                 const roomId = cs.roomId;
                 const actualPlayerRef = state.getSessionUserRef();
@@ -266,13 +265,13 @@ class GamePage extends HTMLElement {
                 });
               }
 
-              if (finalResult == "derrota") {
+              if (gameResult == "derrota") {
                 restartPromise.then(() => {
                   Router.go("/result");
                 });
               }
 
-              if (finalResult == "empate") {
+              if (gameResult == "empate") {
                 restartPromise.then(() => {
                   Router.go("/result");
                 });
@@ -314,9 +313,9 @@ class GamePage extends HTMLElement {
 
     window.onbeforeunload = function disconectPlayer() {
       const actualPlayerRef = state.getSessionUserRef()[0];
-      state.restartPlayer(actualPlayerRef);
+      state.restartPlayerValues(actualPlayerRef);
     };
   }
 }
 
-customElements.define("x-game-page", GamePage);
+customElements.define("x-countdown-page", CountdownPage);

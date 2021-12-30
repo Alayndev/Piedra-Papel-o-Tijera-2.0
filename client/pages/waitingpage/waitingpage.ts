@@ -136,7 +136,7 @@ class WaitingPage extends HTMLElement {
     startButton.addEventListener("click", () => {
       const actualPlayerRef = state.getSessionUserRef()[0];
 
-      state.letStartPlayer(actualPlayerRef);
+      state.playerReadyToStart(actualPlayerRef);
     });
 
     if (notConnectedUsers.length == 1) {
@@ -154,7 +154,7 @@ class WaitingPage extends HTMLElement {
     }
 
     if (!hasPlayersNotStarted) {
-      Router.go("/game");
+      Router.go("/countdown");
     }
   }
 
@@ -251,24 +251,3 @@ class WaitingPage extends HTMLElement {
 }
 
 customElements.define("x-waiting-page", WaitingPage);
-
-// <header class="score-header">
-// <div class="players-name">
-
-//   <span class="score-title">
-//     ${cs.roomScore.player1.name !== undefined ? cs.roomScore.player1.name + ":" : ""}
-//     ${cs.roomScore.player1.score !== undefined ? cs.roomScore.player1.score : ""}
-//   </span>
-
-//   <span class="score-title rival-player">
-//     ${cs.roomScore.player2.name !== "none" ? cs.roomScore.player2.name + ":" : ""}
-//     ${cs.roomScore.player2.score !== "none" ? cs.roomScore.player2.score : "" }
-//   </span>
-
-// </div>
-
-// <div class="room-id">
-//   <span class="score-title">Sala</span>
-//   <span class="score-title">${cs.roomId}</span>
-// </div>
-// </header>

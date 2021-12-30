@@ -1,6 +1,6 @@
 import { state } from "../../state";
 
-class NewRoomPage extends HTMLElement {
+class NewGamePage extends HTMLElement {
   shadow: ShadowRoot;
 
   constructor() {
@@ -141,9 +141,9 @@ class NewRoomPage extends HTMLElement {
                 state.connectRTDBGamerooms();
 
                 const conectionListener = setInterval(() => {
-                  if (state.currentGameFlag() && state.currentScoreFlag()) {
+                  if (state.bothPlayers() && state.scoreReady()) {
                     clearInterval(conectionListener);
-                    state.redirectPlayers();
+                    state.goTo();
                   }
                 }, 200);
               });
@@ -190,4 +190,4 @@ class NewRoomPage extends HTMLElement {
     this.addListeners();
   }
 }
-customElements.define("x-newroom-page", NewRoomPage);
+customElements.define("x-newgame-page", NewGamePage);

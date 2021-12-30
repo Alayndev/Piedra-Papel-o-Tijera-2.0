@@ -46,12 +46,12 @@ class HomePage extends HTMLElement {
   addListeners() {
     const newGameButton = this.shadow.querySelector(".newgame-button");
     newGameButton.addEventListener("click", () => {
-      Router.go("/newroom");
+      Router.go("/newgame");
     });
 
-    const enterRoomButton = this.shadow.querySelector(".enter-room-button");
-    enterRoomButton.addEventListener("click", () => {
-      Router.go("/enterroom");
+    const enterGameButton = this.shadow.querySelector(".entergame-button");
+    enterGameButton.addEventListener("click", () => {
+      Router.go("/entergame");
     });
   }
 
@@ -71,7 +71,7 @@ class HomePage extends HTMLElement {
       <div class="buttons-container">
         <button-comp class="newgame-button"> Nuevo Juego </button-comp>
 
-        <button-comp class="enter-room-button"> Ingresar a una sala </button-comp>
+        <button-comp class="entergame-button"> Ingresar a una sala </button-comp>
       </div>
       
   
