@@ -120,18 +120,11 @@ class EnterGamePage extends HTMLElement {
           if (res.message) {
             const newUserPromise: any = state.signUp(userData);
 
-            console.log(
-              "no existe el user y hay que CREARLO, newUserPromise: ",
-              newUserPromise
-            );
-
             newUserPromise.then((res) => {
               if (res.userId) {
                 state.setRoomId(roomCode);
 
                 const getGameRoomPromise: any = state.getGameRoomLongId();
-
-                console.log("getGameRoomPromise: ", getGameRoomPromise);
 
                 getGameRoomPromise.then((res) => {
                   if (res.message) {
@@ -164,8 +157,6 @@ class EnterGamePage extends HTMLElement {
 
             const getGameRoomPromise: any = state.getGameRoomLongId();
 
-            console.log("HAY userId", getGameRoomPromise);
-
             getGameRoomPromise.then((res) => {
               if (res.message) {
                 const apiMessageCont = this.shadow.querySelector(
@@ -178,8 +169,6 @@ class EnterGamePage extends HTMLElement {
                 loaderCont.setAttribute("style", "display: none");
               } else if (res.rtdbRoomId) {
                 state.connectRTDBGamerooms();
-
-                console.log("HAY rtdbRoomId");
 
                 const conectionListener = setInterval(() => {
                   if (state.bothPlayers() && state.scoreReady()) {

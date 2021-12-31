@@ -58,7 +58,6 @@ class ErrorPage extends HTMLElement {
     this.render();
   }
 
-  // Lista <ul> con posibles errores para que no los vuelva a cometer: Estate atento a no cometer estos errores nuevamente y poder disfrutar del juego!
   render() {
     const divEl = document.createElement("div");
     divEl.innerHTML = `

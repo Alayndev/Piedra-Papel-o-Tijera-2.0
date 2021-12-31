@@ -163,7 +163,6 @@ class WaitingPage extends HTMLElement {
     }
   }
 
-  // subscribe() - PARA VOLVER A HACER RE-RENDER Y MOSTRAR AL CONTRINCANTE/ CUANDO SE CONECTA/ APIERTA JUGAR/ ETC.
   connectedCallback() {
     state.subscribe(() => {
       const cs = state.getState();
@@ -234,7 +233,7 @@ class WaitingPage extends HTMLElement {
     </p> 
 
     <div class="start-container">
-      <p class="rules" >Presioná jugar y elegí: piedra, papel o tijera antes de que pasen los 3 segundos.</p>
+      <p class="rules"> Presioná jugar y elegí: piedra, papel o tijera antes de que pasen los 3 segundos.</p>
 
       <button class="start-button"> Jugar! </button>
     </div>

@@ -59,7 +59,6 @@ class HomePage extends HTMLElement {
     this.render();
   }
 
-  // Poner las manos fixed puede ser una opción, o ver como lo hice en 5
   render() {
     const divEl = document.createElement("div");
     divEl.classList.add("main-container");

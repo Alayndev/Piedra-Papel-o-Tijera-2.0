@@ -125,7 +125,7 @@ class CountdownPage extends HTMLElement {
   }
 
   addListeners() {
-    const playerCont = this.shadow.querySelector(".hands-container"); // querySelectorAll
+    const playerCont = this.shadow.querySelector(".hands-container");
     const handsArray = playerCont.children;
 
     for (const hand of handsArray) {
@@ -204,7 +204,7 @@ class CountdownPage extends HTMLElement {
             // REINICIAR EN RTDB start: false ANTES DE VOLVER A /waitingpage
             const actualPlayerRef = state.getSessionUserRef()[0];
 
-            if (cg[actualPlayerRef].choice === "undefined") {
+            if (cg[actualPlayerRef].choice) {
               state.restartPlayerValues(actualPlayerRef);
             }
 
@@ -216,9 +216,6 @@ class CountdownPage extends HTMLElement {
 
           const playerData = state.getSessionUserRef()[1];
           const rivalData = state.getRivalUserRef()[1];
-
-          console.log(playerData, "playerData");
-          console.log(rivalData, "rivalData");
 
           if (!playersDontChoice) {
             const playerMove = playerData["choice"];

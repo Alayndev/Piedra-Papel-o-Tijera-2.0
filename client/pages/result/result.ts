@@ -27,11 +27,6 @@ class ResultPage extends HTMLElement {
         padding-top: 15px;
       }
 
-
-      .win-container {
-        background-color: rgba(136, 137, 73, 0.9);
-      }
-
       .result__img {
         height: 285px;
         margin: 0;
@@ -66,7 +61,7 @@ class ResultPage extends HTMLElement {
       .second-player {
         color: #FF6442;
       }
-        
+
       .waitingroom-button {
         width: 100%;
         height: 87px;

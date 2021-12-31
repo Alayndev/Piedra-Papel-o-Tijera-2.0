@@ -12,7 +12,7 @@ const API_URL =
 import { Router } from "@vaadin/router";
 
 const state = {
-  // STATE INITIAL DATA
+  // STATE INITIAL DATA:
   data: {
     currentGame: {},
     userName: null,
@@ -25,7 +25,7 @@ const state = {
 
   listeners: [],
 
-  /////////// BASIC STATE METHODS ///////////
+  // BASIC STATE METHODS:
 
   initState() {
     const lastStorageState = JSON.parse(sessionStorage.getItem("actualgame"));
@@ -66,7 +66,7 @@ const state = {
     this.setState(currentState);
   },
 
-  /////////// BACK METHODS ///////////
+  // BACK CONNECTION METHODS:
 
   signUp(userData) {
     const cs = this.getState();
@@ -157,8 +157,6 @@ const state = {
   },
 
   // CAMBIAR Y RECIBIR SCORE EN RTDB
-  // DEVUELVE EL SCORE DE LA BASE DE DATOS DE FIRESTORE
-  // OBJETIVO: roomScore: Firestore Gamerooms Coll score, roomId es el ID de ese Doc de la Coll Gamerooms ( JM1234 )
   importGameRoomScore() {
     const cs = this.getState();
     console.log(cs.roomId, "llamada API -- GET /gameroomsscores/:roomId");
@@ -252,9 +250,7 @@ const state = {
     }
   },
 
-  // CONECTA A LOS JUGADORES A LA GAMEROOM
-  // OBJETIVO: ACTUALIZO RTDB, RECIBE UN PLAYER Y LE ACTUALIZA online: true - playerName: userName ingresado en el input
-  // DE ESTE MODO, currentGame QUEDA EN EL STATE CON player1/player2 online:true - playerName: lo ingresado en el input
+  // ACTUALIZA RTDB online: true - playerName: userName ingresado en el input
   playerOnline(player: string) {
     const cs = this.getState();
     const currentGameData = cs.currentGame[`${player}`];
@@ -279,7 +275,7 @@ const state = {
     }
   },
 
-  // ACTUALIZA LA DATA EN RTDB CAMBIARNDO start: true
+  // ACTUALIZA RTDB CAMBIARNDO start: true
   playerReadyToStart(player: string) {
     const cs = this.getState();
     const currentGameData = cs.currentGame[`${player}`];
@@ -421,7 +417,6 @@ const state = {
   },
 
   // CAMBIAR, SCORE EN RTDB
-  // AGREGA UN PUNTO AL JUGADOR QUE GANO LA PARTIDA DENTRO DEL GAMEROOM DE FIRESTORE
   addWinScore(playerData, roomId) {
     console.log("addWinScore(): ", playerData, roomId);
 
@@ -438,7 +433,7 @@ const state = {
       });
   },
 
-  //////////// FRONT-END METHODS /////////////
+  // FRONT-END METHODS:
 
   whoWins(myMove: Move, rivalMove: Move) {
     const ganeConTijeras = myMove == "tijeras" && rivalMove == "papel";

@@ -113,8 +113,6 @@ class NewGamePage extends HTMLElement {
 
       const newUserPromise: any = state.signUp(newUserData);
 
-      console.log(newUserPromise);
-
       newUserPromise.then((res) => {
         if (res.message) {
           const apiMessageCont = this.shadow.querySelector(
@@ -161,7 +159,6 @@ class NewGamePage extends HTMLElement {
   render() {
     const newRoomEl = document.createElement("div");
     newRoomEl.classList.add("main-container");
-
 
     newRoomEl.innerHTML = `
       <main-title-comp></main-title-comp>

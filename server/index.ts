@@ -16,15 +16,6 @@ const gameroomsCollRef = firestore.collection("gamerooms");
 
 const dist = path.resolve(__dirname, "../dist/", "index.html");
 
-console.log(
-  process.env.NODE_ENV === "production"
-    ? "https://dwf-m6-r-p-s-v2.herokuapp.com"
-    : "http://localhost:3000"
-);
-
-// ENDPOINTS
-
-// SIGNUP:
 app.post("/signup", (req, res) => {
   let userName = req.body.userName;
 
@@ -46,7 +37,6 @@ app.post("/signup", (req, res) => {
     });
 });
 
-// CREATE GAMEROOMS
 app.post("/gamerooms", (req, res) => {
   const { userId } = req.body;
   const { userName } = req.body;
@@ -59,7 +49,6 @@ app.post("/gamerooms", (req, res) => {
 
       const gameroomRef = realtimeDB.ref("/gamerooms/" + gameroomId);
 
-      // CREAMOS GAMEROOM EN LA RTDB (DE EXISTIR TAL DOC/USER EN LA COLL USERS DE FIRESTORE)
       gameroomRef
         .set({
           currentgame: {
@@ -102,7 +91,6 @@ app.post("/gamerooms", (req, res) => {
 
           const gameroomDocRef = gameroomsCollRef.doc(roomId.toString());
 
-          // CREAMOS DOC EN LA COLL GAMEROOMS DE FIRESTORE. GUARDAMOS EL ID DEL GAMEROOM RTDB
           gameroomDocRef
             .set({
               rtdbRoomId: roomLongIdRtdb,
@@ -119,7 +107,7 @@ app.post("/gamerooms", (req, res) => {
             })
             .then(() => {
               res.json({
-                roomId: roomId.toString(), // DEVOLVEMOS EL ID DE EL DOC CREADO EN LA COLL GAMEROOMS DE FIRESTORE. CORTO.
+                roomId: roomId.toString(),
               });
             });
         });
@@ -131,16 +119,12 @@ app.post("/gamerooms", (req, res) => {
   });
 });
 
-// GETTER DEL GAMEROOM RTDB
-// DEVUELVE EL ID LARGO DE LA SALA CUANDO LE PASAS EL ID CORTO Y EL NOMBRE DE USUARIO. SETEA rtdbRoomId
-//   EJEMPLO: /gamerooms/JM1300?userId=Y5m8jxRGZTj3DoI10oqq
 app.get("/gamerooms/:roomId", (req, res) => {
   const { userId } = req.query;
   const { roomId } = req.params;
 
   const userDocRef = usersCollRef.doc(userId.toString());
 
-  // Si el Doc/userId existe en la Coll Users, busco en la Coll Gamerooms el Doc/roomId (corto) para devolver el ID largo RTDB que este Doc guarda
   userDocRef.get().then((doc) => {
     if (doc.exists) {
       const gameroomsDocRef = gameroomsCollRef.doc(roomId.toString());
@@ -163,37 +147,31 @@ app.get("/gamerooms/:roomId", (req, res) => {
   });
 });
 
-// DEVUELVE EL SCORE DE LA BASE DE DATOS DE FIRESTORE
-// EJEMPLO: http://localhost:3000/gameroomsscores/JM1112
 app.get("/gameroomsscores/:roomid", (req, res) => {
-  const gameRoomIdFirstore = req.params.roomid; // Me pasan la roomId Firestore, el Doc de la Coll Gamerooms
+  const gameRoomIdFirstore = req.params.roomid;
 
   const gameroomsDocRef = gameroomsCollRef.doc(gameRoomIdFirstore.toString());
 
   gameroomsDocRef.get().then((snap) => {
     const actualData = snap.data();
-    res.json(actualData.score); // SOLAMENTE el score, así mantenemos oculto el Id de la RTDB ( rtdbRoomId )
+    res.json(actualData.score);
   });
 });
 
-// CONECTA A LOS JUGADORES AL GAMEROOM
-// OBJETIVO: ACTUALIZO RTDB, RECIBE UN PLAYER Y LE ACTUALIZA ( lo que recibe en body ) online: true - playerName: userName ingresado en el input
 app.patch("/gamedata/:gameroomId", function (req, res) {
   const player = req.query.player;
   const gameroomId = req.params.gameroomId;
   const body = req.body;
 
-  // Ref al player a actualizar en la Rtdb
   const playerRef = realtimeDB.ref(
     "/gamerooms/" + gameroomId + "/currentgame/" + player
   );
 
   return playerRef.update(body, () => {
-    res.status(201).json({ message: player + " connected" });
+    res.status(201).json({ message: player + " online" });
   });
 });
 
-// OBJETIVO: AGREGAR EL SCORE Y EL NOMBRE INICIAL DEL PLAYER 2 A FIRESTORE
 app.patch("/gameroomsscore/:roomid", (req, res) => {
   const gameRoomId = req.params.roomid;
   const playerName = req.body.playerName;
@@ -218,8 +196,6 @@ app.patch("/gameroomsscore/:roomid", (req, res) => {
   });
 });
 
-// PREGUNTAR EN DISCORD SI NO DEBERÍA SER GET (ya que obtenemos el id del doc) Y RECIBIR EL userName/email por query string o params, ya que GET no recibe body
-// AUTHENTICATION: RECIBE EL userName DEL USUARIO Y DEVUELVE SU USER ID  (id del Doc de la Coll Users de Firestore)
 app.post("/auth", (req, res) => {
   var { userName } = req.body;
 
@@ -233,29 +209,26 @@ app.post("/auth", (req, res) => {
         });
       } else {
         res.status(200).json({
-          userId: querySnapshot.docs[0].id, // Devolvemos el ID de ese Doc de la Coll Users de Firestore
+          userId: querySnapshot.docs[0].id,
         });
       }
     });
 });
 
-// DEFINE QUE EL JUGADOR ESTA LISTO PARA INICIAR, ACTUALIZA LA DATA EN RTDB CAMBIARNDO start: true
 app.patch("/gamestart/:rtdbRoomId", function (req, res) {
   const { player } = req.query;
   const { rtdbRoomId } = req.params;
-  const body = req.body; // Spread con todo lo que había, sólo cambiamos start: true
+  const body = req.body;
 
   const playerRef = realtimeDB.ref(
     "/gamerooms/" + rtdbRoomId + "/currentgame/" + player
   );
 
   return playerRef.update(body, () => {
-    res.status(201).json({ message: player + "is ready to play" });
+    res.status(201).json({ message: player + " is ready to play" });
   });
 });
 
-// TODO OK
-// RESETEA LA JUGADA Y ENVIA A LOS JUGADORES AL GAMEROOM
 app.patch("/restartplayer/:rtdbRoomId", function (req, res) {
   const { player } = req.query;
   const { rtdbRoomId } = req.params;
@@ -270,8 +243,6 @@ app.patch("/restartplayer/:rtdbRoomId", function (req, res) {
   });
 });
 
-// TODO OK
-// DEFINE QUE EL JUGADOR ESTA LISTO PARA INICIAR
 app.patch("/handchoice/:rtdbRoomId", function (req, res) {
   const { player } = req.query;
   const { rtdbRoomId } = req.params;
@@ -286,8 +257,6 @@ app.patch("/handchoice/:rtdbRoomId", function (req, res) {
   });
 });
 
-// MOVER A LINEA 211 debajo de PATCH /gameroomsscore/:roomid
-// OBJETIVO: AGREGA UN PUNTO AL SCORE DE FIRESTORE, PIDIENDO PARAMETRO EL ROOMID Y EL NOMBRE DEL USUARIO Y SU POSICIÓN EN EL JUEGO COMO REFERENCIA
 app.patch("/gameroomscore/:roomId", (req, res) => {
   const { roomId } = req.params;
   const { playerRef } = req.body;
@@ -322,10 +291,3 @@ app.get("*", (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
-
-// ADAPTAR CON CAP. 5 TEORIA -- OK
-// Repasar métodos Firestore y Rtdb con docs -- OK --> https://firebase.google.com/docs/reference/js/v8/firebase.database.Reference
-// Revisar y probar en Postman -- OK
-// Crear método para consumir este endpoint en state -- OK
-// Consumirlo desde la page -- OK
-// Deploy -- OK
