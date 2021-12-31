@@ -66,6 +66,11 @@ class WaitingPage extends HTMLElement {
       .room-id {
         text-align: end;
       }
+      
+      .room-id__code {
+        font-weight: bold;
+        color: #09428d;
+      }
 
       .code-to-share {
         font-weight: bold;
@@ -178,7 +183,6 @@ class WaitingPage extends HTMLElement {
   }
 
   render() {
-    const cs = state.getState();
     const divEl = document.createElement("div");
     divEl.classList.add("main-container");
     divEl.innerHTML = `
@@ -186,7 +190,7 @@ class WaitingPage extends HTMLElement {
     <header class="score-header">
       <span class="players-name">
 
-        <div class="score-title">
+        <div>
           ${
             this.currentScore.player1.name !== undefined
               ? this.currentScore.player1.name + ":"
@@ -200,7 +204,7 @@ class WaitingPage extends HTMLElement {
         </div>
 
 
-        <span class="score-title second-player">
+        <span class="second-player">
           ${
             this.currentScore.player2.name !== "none"
               ? this.currentScore.player2.name + ":"
@@ -216,8 +220,8 @@ class WaitingPage extends HTMLElement {
       </span>
 
       <span class="room-id">
-        <span class="score-title"> <strong> Sala </strong> </span> <br />
-        <span class="score-title"> ${this.stateData.roomId} </span>
+        <div class="room-id__room" > Sala  </div> 
+        <span class="room-id__code" > ${this.stateData.roomId} </span>
       </span>
     </header>
 

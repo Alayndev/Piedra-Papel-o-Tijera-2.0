@@ -19,7 +19,7 @@ class ResultPage extends HTMLElement {
     var pageStyles = document.createElement("style");
     pageStyles.textContent = `    
       .main-container {
-        height: 120vh;
+        height: 100vh;
         display: flex;
         align-items: center;
         flex-direction: column;
@@ -33,7 +33,7 @@ class ResultPage extends HTMLElement {
       }
 
       .result__img {
-        height: 362px;
+        height: 285px;
         margin: 0;
         background: no-repeat;
       }
@@ -44,24 +44,29 @@ class ResultPage extends HTMLElement {
         background: #ffffff;
         border: 10px solid #000000;
         border-radius: 10px;
-        height: 217px;
+        max-height: 300px;
+        box-sizing: border-box;
       }
 
-      .score-table h3 {
+      .score-table__score {
         margin: 0 auto 10px;
         text-align: center;
         font-family: "Odibee Sans";
         font-size: 55px;
       }
 
-      .score-table h4 {
+      .score-table__player {
         margin: 0;
         text-align: center;
         font-family: "Odibee Sans";
         font-size: 45px;
         text-align: right;
       }
-
+      
+      .second-player {
+        color: #FF6442;
+      }
+        
       .waitingroom-button {
         width: 100%;
         height: 87px;
@@ -75,6 +80,7 @@ class ResultPage extends HTMLElement {
         border: solid 10px #09428d;
         border-radius: 10px;         
       }
+
     `;
     this.shadow.appendChild(pageStyles);
   }
@@ -111,9 +117,9 @@ class ResultPage extends HTMLElement {
       <img src=${resultsImages[gameResult]} class="result__img" />
 
       <div class="score-table">
-        <h3> Score </h3>
-        <h4>${this.currentScore.player1.name}: ${this.currentScore.player1.score}</h4>
-        <h4>${this.currentScore.player2.name}: ${this.currentScore.player2.score}</h4>
+        <h3 class="score-table__score" > Score </h3>
+        <h4 class="score-table__player" >${this.currentScore.player1.name}: ${this.currentScore.player1.score}</h4>
+        <h4 class="score-table__player second-player" >${this.currentScore.player2.name}: ${this.currentScore.player2.score}</h4>
       </div>
 
       <button class="waitingroom-button"> Volver a jugar! </button>

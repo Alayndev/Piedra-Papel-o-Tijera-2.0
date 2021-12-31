@@ -31,9 +31,9 @@ class HomePage extends HTMLElement {
         overflow: hidden;
       }
 
-      @media (min-height: 639px) {
+      @media (min-height: 735px) {
         .hands-container {
-          margin-top: 50%;
+          margin-top: 10%;
           overflow: initial;
         }
       }

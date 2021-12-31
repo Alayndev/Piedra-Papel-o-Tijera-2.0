@@ -49,9 +49,9 @@ class EnterGamePage extends HTMLElement {
         overflow: hidden;
       }
 
-      @media (min-height: 639px) {
+      @media (min-height: 735px) {
         .hands-container {
-          margin-top: 70%;
+          margin-top: 10%;
           overflow: initial;
         }
       }
@@ -201,6 +201,7 @@ class EnterGamePage extends HTMLElement {
 
   render() {
     const divEl = document.createElement("div");
+    divEl.classList.add("main-container");
 
     divEl.innerHTML = `
       <main-title-comp></main-title-comp>
@@ -211,7 +212,7 @@ class EnterGamePage extends HTMLElement {
       
       <form class="form" >
 
-        <input class="input-user-name" name="username" placeholder="tu nombre" maxlength="15" required></input>
+        <input class="input-user-name" name="username" placeholder="tu nombre" maxlength="10" required></input>
 
         <input class="input-user-name" name="roomcode" placeholder="codigo" required></input>
 

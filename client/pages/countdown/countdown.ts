@@ -12,6 +12,14 @@ class CountdownPage extends HTMLElement {
     this.shadow = this.attachShadow({ mode: "open" });
     var style = document.createElement("style");
     style.textContent = `
+    .main-container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-top: 15px;
+    }
+
     .final-game-container {
       display: flex;
       margin: 0 auto;
@@ -93,17 +101,22 @@ class CountdownPage extends HTMLElement {
     }
 
     .hands-container {
-      height: 100%;
       display: flex;
       justify-content: space-around;
       align-items: flex-end;
-      overflow: hidden;
     }
 
     @media (min-height: 639px) {
       .hands-container {
-        margin-top: 70%;
         overflow: initial;
+        margin-bottom: 25%;
+      }
+    }
+
+    @media (min-height: 735px) {
+      .hands-container {
+        overflow: initial;
+        margin-bottom: 55%;
       }
     }
 
@@ -151,7 +164,7 @@ class CountdownPage extends HTMLElement {
 
   render() {
     const mainPage = document.createElement("main");
-    mainPage.classList.add("welcome-container");
+    mainPage.classList.add("main-container");
 
     let counter = 3;
 

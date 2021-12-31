@@ -51,9 +51,9 @@ class NewGamePage extends HTMLElement {
         overflow: hidden;
       }
 
-      @media (min-height: 639px) {
+      @media (min-height: 735px) {
         .hands-container {
-          margin-top: 70%;
+          margin-top: 10%;
           overflow: initial;
         }
       }
@@ -160,6 +160,8 @@ class NewGamePage extends HTMLElement {
 
   render() {
     const newRoomEl = document.createElement("div");
+    newRoomEl.classList.add("main-container");
+
 
     newRoomEl.innerHTML = `
       <main-title-comp></main-title-comp>
@@ -170,7 +172,7 @@ class NewGamePage extends HTMLElement {
     
       <form class="form" >
         <label class="label-user-name" > User Name: <br />
-          <input class="input-user-name" type="text" name="username" maxlength="15" required />
+          <input class="input-user-name" type="text" name="username" maxlength="10" required />
         </label>
 
         <button class="start-button"> Empezar </button>
