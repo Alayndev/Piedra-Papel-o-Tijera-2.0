@@ -66,10 +66,10 @@ class ErrorPage extends HTMLElement {
 
       <h4> Ocurrió un error al intertar jugar </h4>
 
-      <p> No te preocupes! Fijate de no cometer el siguiente error: </p>
+      <p> No te preocupes! Fijate de no cometer el siguiente error nuevamente: </p>
 
       <ul class="unordered-list"> 
-        <li> ❌ El user name ingresado no pertenece a la sala indicada </li>
+        <li> ❌ Esta sala está completa y tu user name no coincide con nadie en la sala. </li>
       </ul>
 
       <button class="return-home" > Volver a jugar! </button>

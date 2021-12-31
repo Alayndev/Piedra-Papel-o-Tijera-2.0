@@ -112,19 +112,21 @@ class CountdownPage extends HTMLElement {
   }
 
   addListeners() {
-    const playerCont = this.shadow.querySelector(".hands-container");
+    const playerCont = this.shadow.querySelector(".hands-container"); // querySelectorAll
     const handsArray = playerCont.children;
 
     for (const hand of handsArray) {
       hand.addEventListener("handClick", (e: any) => {
         let handType = e.detail.handMove;
 
+        const imgEl = hand.shadowRoot.querySelector(".hand");
+
         if (hand.getAttribute("handType") !== handType) {
-          hand.classList.add("inactive-hand");
-          hand.classList.remove("active-hand");
+          imgEl.classList.add("inactive-hand");
+          imgEl.classList.remove("active-hand");
         } else if (hand.getAttribute("handType") === handType) {
-          hand.classList.add("active-hand");
-          hand.classList.remove("inactive-hand");
+          imgEl.classList.add("active-hand");
+          imgEl.classList.remove("inactive-hand");
         }
 
         const actualPlayerRef = state.getSessionUserRef()[0];
@@ -186,13 +188,16 @@ class CountdownPage extends HTMLElement {
             </span>
             `;
 
+            // REINICIAR EN RTDB start: false ANTES DE VOLVER A /waitingpage
+            const actualPlayerRef = state.getSessionUserRef()[0];
+
+            if (cg[actualPlayerRef].choice === "undefined") {
+              state.restartPlayerValues(actualPlayerRef);
+            }
+
             const newGameButton = mainPage.querySelector(".waitingroom-button");
             newGameButton.addEventListener("click", () => {
-              const actualPlayerRef = state.getSessionUserRef()[0];
-              const restartPromise = state.restartPlayerValues(actualPlayerRef);
-              restartPromise.then(() => {
-                Router.go("/waitingpage");
-              });
+              Router.go("/waitingpage");
             });
           }
 
@@ -215,13 +220,12 @@ class CountdownPage extends HTMLElement {
 
             const handPlayerEl = mainPage.getElementsByTagName("hand-comp");
 
-            // ACA DEBERIA PONER INACTIVE Y ACTIVE CLASSES
             handPlayerEl[1].shadowRoot.children[0].innerHTML = `
-               .hand{
-              height: 240px;
-              position: absolute;
-              bottom: 5%;
-              cursor: pointer;
+              .hand{
+                height: 240px;
+                position: absolute;
+                bottom: 5%;
+                cursor: pointer;
               }
               `;
 
@@ -231,7 +235,7 @@ class CountdownPage extends HTMLElement {
                position: absolute;
                top: 5%;
                cursor: pointer;
-              transform: rotate(180deg);
+               transform: rotate(180deg);
               }
               `;
 
