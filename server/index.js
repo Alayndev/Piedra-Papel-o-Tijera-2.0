@@ -113,7 +113,7 @@ app.get("/gamerooms/:roomId", function (req, res) {
             gameroomsDocRef.get().then(function (snap) {
                 if (snap.exists) {
                     var data = snap.data();
-                    res.json(data.rtdbRoomId);
+                    res.json(data);
                 }
                 else {
                     res.status(401).json({

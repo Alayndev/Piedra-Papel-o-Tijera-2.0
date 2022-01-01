@@ -12,7 +12,6 @@ const API_URL =
 import { Router } from "@vaadin/router";
 
 const state = {
-  // STATE INITIAL DATA:
   data: {
     currentGame: {},
     userName: null,
@@ -24,8 +23,6 @@ const state = {
   },
 
   listeners: [],
-
-  // BASIC STATE METHODS:
 
   initState() {
     const lastStorageState = JSON.parse(sessionStorage.getItem("actualgame"));
@@ -65,8 +62,6 @@ const state = {
 
     this.setState(currentState);
   },
-
-  // BACK CONNECTION METHODS:
 
   signUp(userData) {
     const cs = this.getState();
@@ -121,7 +116,7 @@ const state = {
           return res.json();
         })
         .then((json) => {
-          console.log(json);
+          console.log(json,"rtdbRoomId");
 
           cs.rtdbRoomId = json.rtdbRoomId;
           this.setState(cs);
@@ -134,6 +129,7 @@ const state = {
   // CAMBIAR Y RECIBIR SCORE EN RTDB
   connectRTDBGamerooms() {
     const cs = this.getState();
+    console.log(cs, "cs");
 
     const gameRoomRef = rtdb.ref(
       "/gamerooms/" + cs.rtdbRoomId + "/currentgame"
@@ -141,7 +137,8 @@ const state = {
 
     gameRoomRef.on("value", (snapshot) => {
       const gameRoomData = snapshot.val();
-      console.log(gameRoomData);
+
+      console.log(gameRoomData, "null");
 
       cs.currentGame = gameRoomData;
       this.setState(cs);
@@ -432,8 +429,6 @@ const state = {
         return json;
       });
   },
-
-  // FRONT-END METHODS:
 
   whoWins(myMove: Move, rivalMove: Move) {
     const ganeConTijeras = myMove == "tijeras" && rivalMove == "papel";

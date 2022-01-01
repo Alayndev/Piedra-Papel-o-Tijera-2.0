@@ -132,7 +132,7 @@ app.get("/gamerooms/:roomId", (req, res) => {
       gameroomsDocRef.get().then((snap) => {
         if (snap.exists) {
           const data = snap.data();
-          res.json(data.rtdbRoomId);
+          res.json(data);
         } else {
           res.status(401).json({
             message: "Gameroom does not exist.",
