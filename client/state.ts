@@ -7,7 +7,7 @@ const API_URL =
     ? "https://dwf-m6-r-p-s-v2.herokuapp.com"
     : "http://localhost:3000";
 
-//const API_URL = "http://localhost:3000";
+// const API_URL = "http://localhost:3000";
 
 import { Router } from "@vaadin/router";
 
@@ -116,7 +116,7 @@ const state = {
           return res.json();
         })
         .then((json) => {
-          console.log(json,"rtdbRoomId");
+          console.log(json, "rtdbRoomId");
 
           cs.rtdbRoomId = json.rtdbRoomId;
           this.setState(cs);
@@ -129,7 +129,6 @@ const state = {
   // CAMBIAR Y RECIBIR SCORE EN RTDB
   connectRTDBGamerooms() {
     const cs = this.getState();
-    console.log(cs, "cs");
 
     const gameRoomRef = rtdb.ref(
       "/gamerooms/" + cs.rtdbRoomId + "/currentgame"
