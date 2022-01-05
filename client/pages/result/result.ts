@@ -26,6 +26,12 @@ class ResultPage extends HTMLElement {
         gap: 20px;    
         padding-top: 15px;
       }
+      
+      @media (min-width: 639px) {
+        .main-container {
+          justify-content: center;
+        }
+      }
 
       .result__img {
         height: 285px;

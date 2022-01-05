@@ -57,6 +57,12 @@ class WaitingPage extends HTMLElement {
           margin-bottom: 55%;
         }
       }
+      
+      @media (min-width: 639px) {
+        .hands-container {
+          margin-bottom: 0;
+        }
+      }
 
 
       .second-player {

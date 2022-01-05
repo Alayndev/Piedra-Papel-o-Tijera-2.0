@@ -72,8 +72,8 @@ class CountdownPage extends HTMLElement {
     }
     
     .circle {
-      width: 250px;
-      height: 250px;
+      width: 200px;
+      height: 200px;
       border: solid 25px black;
       border-radius: 50%;
       border-left-color: rgba(0, 0, 0, 0.3);
@@ -117,6 +117,12 @@ class CountdownPage extends HTMLElement {
       .hands-container {
         overflow: initial;
         margin-bottom: 55%;
+      }
+    }
+
+    @media (min-width: 639px) {
+      .hands-container {
+        margin-bottom: 0;
       }
     }
 

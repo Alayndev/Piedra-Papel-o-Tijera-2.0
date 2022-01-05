@@ -17,11 +17,17 @@ class MainTitle extends HTMLElement {
     const titleStyles = document.createElement("style");
     titleStyles.textContent = `
           .title {
-            font-size: 80px;
+            font-size: 75px;
             font-weight: 700;
             color: #009048;
             text-align: center;
-            margin: 50px 0;
+            margin: 20px 0 10px;
+          }
+          
+          @media (min-width: 639px) {
+            .title {
+              margin: 20px 0;
+            }
           }
         `;
 

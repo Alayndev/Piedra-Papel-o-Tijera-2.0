@@ -10,7 +10,7 @@ class HomePage extends HTMLElement {
     let pageStyles = document.createElement("style");
     pageStyles.textContent = `
       .main-container {
-        height: inherit;
+        height: 100%;
         display: flex;
         flex-direction: column;
         padding-top: 15px;
@@ -24,17 +24,15 @@ class HomePage extends HTMLElement {
      }
       
       .hands-container {
-        height: 100%;
         display: flex;
         justify-content: space-around;
         align-items: flex-end;
         overflow: hidden;
       }
-
-      @media (min-height: 735px) {
+      
+      @media (min-width: 639px) {
         .hands-container {
-          margin-top: 10%;
-          overflow: initial;
+          height: 100%;
         }
       }
       

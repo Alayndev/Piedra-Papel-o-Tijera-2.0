@@ -16,7 +16,7 @@ body {
   list-style: none;
 }
 
-@media (min-height: 639px) {
+/* @media (min-height: 639px) {
   #root {
     height: 120vh;
   }
@@ -25,5 +25,11 @@ body {
 @media (min-height: 739px) {
   #root {
     height: 1150px;
+  }
+} */
+
+@media (min-width: 639px) {
+  #root {
+    height: 100vh;
   }
 }
