@@ -12,6 +12,7 @@ class EnterGamePage extends HTMLElement {
         height: 100%;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         padding-top: 15px;
       }
       
@@ -48,12 +49,6 @@ class EnterGamePage extends HTMLElement {
         overflow: hidden;
       }
       
-      @media (min-width: 639px) {
-        .hands-container {
-          height: 100%;
-        }
-      }
-
       .submit-button {
         width: 100%;
         height: 87px;

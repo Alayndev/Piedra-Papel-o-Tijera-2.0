@@ -29,7 +29,6 @@ const state = {
 
     if (lastStorageState) {
       this.setState(lastStorageState);
-      this.connectRTDBGamerooms();
     } else {
       const initialState = this.getState();
 

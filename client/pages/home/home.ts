@@ -13,6 +13,7 @@ class HomePage extends HTMLElement {
         height: 100%;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         padding-top: 15px;
       }
       
@@ -29,13 +30,7 @@ class HomePage extends HTMLElement {
         align-items: flex-end;
         overflow: hidden;
       }
-      
-      @media (min-width: 639px) {
-        .hands-container {
-          height: 100%;
-        }
-      }
-      
+            
     `;
 
     this.shadow.appendChild(pageStyles);

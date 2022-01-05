@@ -13,6 +13,7 @@ class NewGamePage extends HTMLElement {
         height: 100%;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         padding-top: 15px;
       }
       
@@ -50,11 +51,7 @@ class NewGamePage extends HTMLElement {
         overflow: hidden;
       }
       
-      @media (min-width: 639px) {
-        .hands-container {
-          height: 100%;
-        }
-      }
+  
 
       .start-button {
         width: 100%;
